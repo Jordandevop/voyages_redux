@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom"
 function Navbar(){
 
     return (
+        <>
         <BootstapNavbar 
         bg="primary"
         data-bs-theme="dark"
@@ -26,6 +27,8 @@ function Navbar(){
             </Container>
             
         </BootstapNavbar>
+        </>
+        
     )
 
 }
