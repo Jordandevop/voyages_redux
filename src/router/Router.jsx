@@ -13,6 +13,7 @@ import NotFoundPage from "../pages/NotFoundPage";
 import DestinationPage from "../pages/DestinationsPage";
 import DestinationDetailPage from "../pages/DestinationDetailPage";
 import SearchPage from "../pages/SearchPage";
+import ContactPage from "../pages/ContactPage";
 
 const router = createBrowserRouter([
 
@@ -43,6 +44,9 @@ const router = createBrowserRouter([
             {
                 path: "search",
                 element: <SearchPage/>
+            },{
+                path:"contact",
+                element: <ContactPage/>
             },
             {
                 path: "*",

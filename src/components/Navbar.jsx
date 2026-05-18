@@ -30,6 +30,9 @@ function Navbar(){
                          <Nav.Link as={NavLink} to='/search'>
                             Rechercher
                         </Nav.Link>
+                         <Nav.Link as={NavLink} to='/contact'>
+                            Contact
+                        </Nav.Link>
                     </Nav>
 
                 </BootstapNavbar.Collapse>
