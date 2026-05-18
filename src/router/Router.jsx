@@ -9,6 +9,9 @@ import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout"
 import HomePage from "../pages/HomePage"
 import AboutPage from "../pages/AboutPage";
+import NotFoundPage from "../pages/NotFoundPage";
+import DestinationPage from "../pages/DestinationsPage";
+import DestinationDetailPage from "../pages/DestinationDetailPage";
 
 const router = createBrowserRouter([
 
@@ -16,7 +19,7 @@ const router = createBrowserRouter([
         path:"/",
         element: <MainLayout/>,
         // toutes les pages utilisent MainLayout
-
+        //errorElement: <NotFoundPage/>,
         children: [
             {
                 index: true,
@@ -27,6 +30,18 @@ const router = createBrowserRouter([
             {
                 path: "about",
                 element: <AboutPage/>
+            },
+            {
+                path: "destinationPage",
+                element: <DestinationPage/>
+            },
+            {
+                path:"destination/:slug",
+                element: <DestinationDetailPage/>
+            },
+            {
+                path: "*",
+                element: <NotFoundPage/>
             }
         ]
     }

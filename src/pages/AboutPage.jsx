@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 function AboutPage() {
     return (
         <Container className="py-5">
-            {/* En-tête de la page */}
             <div className="text-center mb-5">
                 <span className="text-primary fw-bold text-uppercase tracking-wider small d-block mb-2">
                     Découvrez notre agence
@@ -16,12 +15,11 @@ function AboutPage() {
                 </p>
             </div>
 
-            {/* Section Histoire (Image + Texte) */}
             <Row className="align-items-center mb-5 pb-4">
                 <Col md={6}>
                     <img 
                         src="https://cdn.pixabay.com/photo/2016/01/09/18/27/journey-1130732_1280.jpg" 
-                        alt="Voyageurs explorant la nature" 
+                        alt="kit du voyageurs carte, photo, loupe , appareil photo." 
                         className="img-fluid rounded-4 shadow"
                     />
                 </Col>
