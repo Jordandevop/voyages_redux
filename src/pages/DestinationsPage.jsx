@@ -38,6 +38,8 @@ function DestinationPage() {
                                     </Card.Title>
                                     
                                     <Badge 
+                                        as={Link}
+                                        to={`/region/${destination.regionSlug}`}
                                         bg={getRegionColor(destination.region)} 
                                         className="rounded-pill px-3 py-2 text-white shadow-sm"
                                     >

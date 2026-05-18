@@ -4,6 +4,7 @@ export const destinations = [
         slug: "japan",
         name: "Japon",
         region: "Asie",
+        regionSlug: "asie",
         capital: "Tokyo",
         description:
             "Le Japon melange traditions anciennes, temples, megalopoles modernes et paysages naturels spectaculaires.",
@@ -22,6 +23,7 @@ export const destinations = [
         slug: "iceland",
         name: "Islande",
         region: "Europe",
+        regionSlug: "europe",
         capital: "Reykjavik",
         description:
             "L'Islande est connue pour ses volcans, glaciers, cascades, sources chaudes et paysages lunaires.",
@@ -40,6 +42,7 @@ export const destinations = [
         slug: "morocco",
         name: "Maroc",
         region: "Afrique",
+        regionSlug: "afrique",
         capital: "Rabat",
         description:
             "Le Maroc offre des medinas, des montagnes, le desert, une cuisine riche et une forte identite culturelle.",
@@ -58,6 +61,7 @@ export const destinations = [
         slug: "canada",
         name: "Canada",
         region: "Amerique",
+        regionSlug: "amerique",
         capital: "Ottawa",
         description:
             "Le Canada propose de grands espaces naturels, des lacs, des forets, des montagnes et des villes multiculturelles.",
@@ -73,9 +77,10 @@ export const destinations = [
     },
     {
         id: 5,
-        slug: "Sweden",
+        slug: "sweden",
         name: "Suède",
         region: "Europe",
+        regionSlug: "europe",
         capital: "Stockholm",
         description:
             "La Suède est un pays scandinave composé de milliers d'îles côtières et lacs intérieurs, ainsi que de vastes forêts boréales et de montagnes glaciaires.",
@@ -94,6 +99,7 @@ export const destinations = [
         slug: "peru",
         name: "Pérou",
         region: "Amérique",
+        regionSlug: "amerique",
         capital: "Lima",
         description:
             "Le Pérou abrite une partie de la forêt amazonienne et le Machu Picchu, une ancienne cité inca perchée dans les Andes.",
@@ -112,6 +118,7 @@ export const destinations = [
         slug: "new-zealand",
         name: "Nouvelle-Zélande",
         region: "Océanie",
+        regionSlug: "oceanie",
         capital: "Wellington",
         description:
             "La Nouvelle-Zélande se distingue par ses volcans, ses fjords spectaculaires, ses plages de sable fin et sa culture maorie.",
@@ -130,6 +137,7 @@ export const destinations = [
         slug: "italy",
         name: "Italie",
         region: "Europe",
+        regionSlug: "europe",
         capital: "Rome",
         description:
             "L'Italie est réputée pour sa cuisine mondiale, ses chefs-d'œuvre artistiques, son histoire romaine et ses côtes méditerranéennes.",
@@ -148,6 +156,7 @@ export const destinations = [
         slug: "madagascar",
         name: "Madagascar",
         region: "Afrique",
+        regionSlug: "afrique",
         capital: "Antananarivo",
         description:
             "Madagascar est une immense nation insulaire célèbre pour ses baobabs, ses lémuriens et sa biodiversité unique au monde.",
@@ -166,6 +175,7 @@ export const destinations = [
         slug: "costa-rica",
         name: "Costa Rica",
         region: "Amérique",
+        regionSlug: "amerique",
         capital: "San José",
         description:
             "Le Costa Rica est un pays d'Amérique centrale réputé pour ses plages, ses volcans, ses forêts tropicales et sa philosophie de vie 'Pura Vida'.",
@@ -184,6 +194,7 @@ export const destinations = [
         slug: "portugal",
         name: "Portugal",
         region: "Europe",
+        regionSlug: "europe",
         capital: "Lisbonne",
         description:
             "Le Portugal séduit par ses plages dorées de l'Algarve, ses châteaux médiévaux, sa musique Fado et son architecture recouverte d'azulejos.",
@@ -202,6 +213,7 @@ export const destinations = [
         slug: "australia",
         name: "Australie",
         region: "Océanie",
+        regionSlug: "oceanie",
         capital: "Canberra",
         description:
             "L'Australie offre des plages de surf mythiques, la Grande Barrière de corail, l'Outback sauvage et une faune unique au monde.",
@@ -220,6 +232,7 @@ export const destinations = [
         slug: "egypt",
         name: "Égypte",
         region: "Afrique",
+        regionSlug: "afrique",
         capital: "Le Caire",
         description:
             "L'Égypte fascine par ses millénaires d'histoire, ses pyramides majestueuses, ses temples pharaoniques le long du Nil et ses récifs de la mer Rouge.",
@@ -238,6 +251,7 @@ export const destinations = [
         slug: "brazil",
         name: "Brésil",
         region: "Amérique",
+        regionSlug: "amerique",
         capital: "Brasília",
         description:
             "Le Brésil est célèbre pour son carnaval vibrant, la plage de Copacabana, la statue du Christ Rédempteur et l'immensité de l'Amazonie.",
@@ -256,6 +270,7 @@ export const destinations = [
         slug: "thailand",
         name: "Thaïlande",
         region: "Asie",
+        regionSlug: "asie",
         capital: "Bangkok",
         description:
             "La Thaïlande est réputée pour ses plages tropicales, ses palais royaux opulents, ses ruines anciennes et ses temples ornés de figures de Bouddha.",

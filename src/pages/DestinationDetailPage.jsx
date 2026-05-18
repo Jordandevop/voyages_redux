@@ -54,7 +54,11 @@ function DestinationDetailPage() {
                 </Col>
                 
                 <Col lg={6} className="px-lg-5">
-                    <Badge bg="info" className="text-uppercase tracking-wider mb-2 py-2 px-3 rounded-pill">
+                    <Badge 
+                    as={Link}
+                    to={`/region/${destination.regionSlug}`}
+                    bg="info" 
+                    className="text-uppercase tracking-wider mb-2 py-2 px-3 rounded-pill">
                         {destination.region}
                     </Badge>
                     <h1 className="display-4 fw-bold mb-2">{destination.name}</h1>

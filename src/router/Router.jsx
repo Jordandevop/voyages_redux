@@ -14,6 +14,7 @@ import DestinationPage from "../pages/DestinationsPage";
 import DestinationDetailPage from "../pages/DestinationDetailPage";
 import SearchPage from "../pages/SearchPage";
 import ContactPage from "../pages/ContactPage";
+import RegionPage from "../pages/RegionPage";
 
 const router = createBrowserRouter([
 
@@ -47,6 +48,10 @@ const router = createBrowserRouter([
             },{
                 path:"contact",
                 element: <ContactPage/>
+            },
+            {
+                path:"region/:regionName",
+                element: <RegionPage/>
             },
             {
                 path: "*",
