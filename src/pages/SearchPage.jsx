@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Badge, Alert, Form, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { destinations } from "../data/destinations";
@@ -10,15 +10,17 @@ const searchSchema = yup.object({
     keyword: yup.string()
         .transform((value) => (value === "" ? undefined : value))
         .min(2, "La recherche doit avoir au moins 2 caractères."),
-    region: yup.string()
+    region: yup.string(),
+    budget: yup.string() 
 });
 
 function SearchPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    
+
     const currentSearch = searchParams.get("q") || "";
     const currentRegion = searchParams.get("region") || "";
+    const currentBudget = searchParams.get("budget") || "";
 
     const {
         register,
@@ -29,54 +31,59 @@ function SearchPage() {
         resolver: yupResolver(searchSchema),
         defaultValues: {
             keyword: currentSearch,
-            region: currentRegion
+            region: currentRegion,
+            budget: currentBudget
         }
     });
 
     const filteredDestinations = destinations.filter((destination) => {
         const search = currentSearch.toLowerCase();
         const selectedRegion = currentRegion.toLowerCase();
+        const selectedBudget = currentBudget.toLowerCase();
 
         const matchKeyword = !search || 
             destination.name.toLowerCase().includes(search) ||
             destination.capital.toLowerCase().includes(search) ||
-            destination.region.toLowerCase().includes(search);
+            destination.region.toLowerCase().includes(search) ||
+            destination.language.toLowerCase().includes(search) ||
+            destination.currency.toLowerCase().includes(search);
 
-        // MODIFICATION 1 : On utilise .includes() à la place de === 
-        // pour que "euro" trouve bien "Europe"
         const matchRegion = !selectedRegion || destination.region.toLowerCase().includes(selectedRegion);
+
+        const matchBudget = !selectedBudget || destination.budget.toLowerCase().includes(selectedBudget);
         
-        return matchKeyword && matchRegion;
+        return matchKeyword && matchRegion && matchBudget;
     });
 
     const onSubmit = (data) => {
         const params = new URLSearchParams();
         if (data.keyword) params.append("q", data.keyword);
         if (data.region) params.append("region", data.region);
+        if (data.budget) params.append("budget", data.budget); 
         
         navigate(`/search?${params.toString()}`);
     };
 
     const handleReset = () => {
-        reset({ keyword: "", region: "" });
+        reset({ keyword: "", region: "", budget: "" });
         navigate("/search");
     };
 
     return (
         <Container className="py-5">
-            <h1 className="display-5 fw-bold text-dark mb-4">Rechercher une destination</h1>
-            
+            <h1 className="display-5 fw-bold text-dark mb-4">Trouver votre prochain voyage</h1>
+
             <Card className="shadow-sm border-0 mb-5 rounded-4">
                 <Card.Body className="p-4">
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row className="g-3 align-items-end">
-                            
-                            <Col md={5}>
+
+                            <Col lg={4} md={6}>
                                 <Form.Group controlId="searchKeyword">
-                                    <Form.Label className="fw-semibold text-secondary">Votre recherche</Form.Label>
+                                    <Form.Label className="fw-semibold text-secondary">Destination, langue, monnaie...</Form.Label>
                                     <Form.Control
                                         type="text"
-                                        placeholder="Exemple: France, Japon, Tokyo..."
+                                        placeholder="Ex: Japon, Espagnol, Yen, Rome..."
                                         className="py-2.5"
                                         isInvalid={!!errors.keyword}
                                         {...register("keyword")}
@@ -87,25 +94,36 @@ function SearchPage() {
                                 </Form.Group>
                             </Col>
 
-                            {/* MODIFICATION 2 : Le Select devient un Control classique de type "text" */}
-                            <Col md={4}>
+                            <Col lg={3} md={6}>
                                 <Form.Group controlId="searchRegion">
-                                    <Form.Label className="fw-semibold text-secondary">Filtrer par région</Form.Label>
+                                    <Form.Label className="fw-semibold text-secondary">Région / Continent</Form.Label>
                                     <Form.Control 
                                         type="text"
-                                        placeholder="Exemple: Europe, Asie, Afrique..."
+                                        placeholder="Ex: Europe, Asie..."
                                         className="py-2.5"
                                         {...register("region")}
                                     />
                                 </Form.Group>
                             </Col>
+
+                            <Col lg={3} md={6}>
+                                <Form.Group controlId="searchBudget">
+                                    <Form.Label className="fw-semibold text-secondary">Gamme de budget</Form.Label>
+                                    <Form.Select className="py-2.5" {...register("budget")}>
+                                        <option value="">Tous les budgets</option>
+                                        <option value="faible">Faible (Idéal petits budgets)</option>
+                                        <option value="moyen">Moyen (Standard)</option>
+                                        <option value="élevé">Élevé / Très élevé (Haut de gamme)</option>
+                                    </Form.Select>
+                                </Form.Group>
+                            </Col>
                             
-                            <Col md={3} className="d-flex gap-2">
+                            <Col lg={2} md={6} className="d-flex gap-2">
                                 <Button type="submit" variant="primary" className="w-100 fw-bold py-2.5">
                                     Rechercher
                                 </Button>
-                                { (currentSearch || currentRegion) && (
-                                    <Button variant="outline-danger" onClick={handleReset} title="Réinitialiser">
+                                { (currentSearch || currentRegion || currentBudget) && (
+                                    <Button variant="outline-danger" onClick={handleReset} title="Réinitialiser tous les filtres">
                                         &times;
                                     </Button>
                                 )}
@@ -115,11 +133,11 @@ function SearchPage() {
                 </Card.Body>
             </Card>
 
-            {(currentSearch || currentRegion) && (
+            {(currentSearch || currentRegion || currentBudget) && (
                 <div className="mt-4">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="h4 mb-0 text-dark">
-                            Résultats de la recherche
+                            Résultats de votre recherche
                         </h2>
                         <Badge bg="secondary" className="px-3 py-2 rounded-pill">
                             {filteredDestinations.length} trouvé{filteredDestinations.length > 1 ? "s" : ""}
@@ -150,13 +168,26 @@ function SearchPage() {
                                                     {destination.region}
                                                 </Badge>
                                             </div>
-                                            <p className="text-muted small mb-3">📍 Capitale : {destination.capital}</p>
+                                            <p className="text-muted small mb-2">📍 Capitale : {destination.capital}</p>
+                                            
                                             <Card.Text className="text-secondary flex-grow-1">
                                                 {destination.description.length > 90 
                                                     ? `${destination.description.substring(0, 90)}...` 
                                                     : destination.description}
                                             </Card.Text>
-                                            <Button variant="outline-primary" className="w-100 mt-3 rounded-pill fw-bold pointer-events-none">
+
+                                            <hr className="text-muted opacity-25 my-3" />
+                                            <div className="d-flex flex-column gap-1 small text-muted mb-3">
+                                                <div className="d-flex justify-content-between">
+                                                    <span>💰 {destination.budget.split(',')[0]}</span>
+                                                    <span>🗣️ {destination.language.split(' ')[0]}</span>
+                                                </div>
+                                                <div className="text-truncate text-start mt-1 text-primary fw-medium" style={{ fontSize: '0.8rem' }}>
+                                                    📅 Idéal : {destination.bestSeason.split(' pour ')[0]}
+                                                </div>
+                                            </div>
+
+                                            <Button variant="outline-primary" className="w-100 mt-auto rounded-pill fw-bold pointer-events-none">
                                                 Découvrir {destination.name}
                                             </Button>
                                         </Card.Body>
@@ -168,7 +199,7 @@ function SearchPage() {
                         <Alert variant="warning" className="border-0 shadow-sm rounded-4 py-5 text-center mt-4">
                             <div className="display-4 mb-3">🗺️</div>
                             <h4 className="fw-bold">Aucun voyage ne correspond à vos critères</h4>
-                            <p className="text-muted mb-0">Essayez de modifier l'orthographe ou de sélectionner une autre région.</p>
+                            <p className="text-muted mb-0">Essayez de modifier vos filtres ou d'élargir votre budget.</p>
                         </Alert>
                     )}
                 </div>
