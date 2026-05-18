@@ -8,6 +8,7 @@ import { createBrowserRouter } from "react-router-dom";
 // permet de créer un router moderne sur les urls du navigateur
 import MainLayout from "../layouts/MainLayout"
 import HomePage from "../pages/HomePage"
+import AboutPage from "../pages/AboutPage";
 
 const router = createBrowserRouter([
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
                 // cette page est la page par défaut
                 // index : true = path: ""( deuxieme écriture possible)
                 element: <HomePage/>
+            },
+            {
+                path: "about",
+                element: <AboutPage/>
             }
         ]
     }

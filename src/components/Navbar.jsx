@@ -21,6 +21,9 @@ function Navbar(){
                         <Nav.Link as={NavLink} to= '/'>
                             Accueil                        
                         </Nav.Link>
+                        <Nav.Link as={NavLink} to="about">
+                            A propos
+                        </Nav.Link>
                     </Nav>
 
                 </BootstapNavbar.Collapse>

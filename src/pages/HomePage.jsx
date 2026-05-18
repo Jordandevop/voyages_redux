@@ -16,13 +16,13 @@ function HomePage() {
                                 </span>
                                 <h1 className="display-5 fw-bold mb-3 text-dark">
                                     Trouvez votre prochaine <br />
-                                    <span className="text-primary">destination de rêve</span>
+                                    <span style={{ color: "blue" }}>destination de rêve</span>
                                 </h1>
                                 <p className="text-secondary mb-4 fs-5">
                                     Explorez des cultures uniques, des paysages à couper le souffle et 
                                     planifiez le voyage qui vous ressemble à travers notre sélection exclusive.
                                 </p>
-                                <Button as={Link} to="/" variant="primary" size="lg" className="px-4 py-2 shadow-sm">
+                                <Button as={Link} to="/" variant="outline-primary">
                                     Voir les destinations
                                 </Button>
                             </Card.Body>
