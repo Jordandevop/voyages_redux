@@ -8,9 +8,8 @@ import getRegionColor from "../utils/helper";
 
 const searchSchema = yup.object({
     keyword: yup.string()
-        .required("Veuillez saisir une recherche")
+        .transform((value) => (value === "" ? undefined : value))
         .min(2, "La recherche doit avoir au moins 2 caractères."),
-    
     region: yup.string()
 });
 
@@ -43,7 +42,9 @@ function SearchPage() {
             destination.capital.toLowerCase().includes(search) ||
             destination.region.toLowerCase().includes(search);
 
-        const matchRegion = !selectedRegion || destination.region.toLowerCase() === selectedRegion;
+        // MODIFICATION 1 : On utilise .includes() à la place de === 
+        // pour que "euro" trouve bien "Europe"
+        const matchRegion = !selectedRegion || destination.region.toLowerCase().includes(selectedRegion);
         
         return matchKeyword && matchRegion;
     });
@@ -61,8 +62,6 @@ function SearchPage() {
         navigate("/search");
     };
 
-    const uniqueRegions = [...new Set(destinations.map(d => d.region))];
-
     return (
         <Container className="py-5">
             <h1 className="display-5 fw-bold text-dark mb-4">Rechercher une destination</h1>
@@ -72,8 +71,7 @@ function SearchPage() {
                     <Form onSubmit={handleSubmit(onSubmit)}>
                         <Row className="g-3 align-items-end">
                             
-                            
-                            <Col md={6}>
+                            <Col md={5}>
                                 <Form.Group controlId="searchKeyword">
                                     <Form.Label className="fw-semibold text-secondary">Votre recherche</Form.Label>
                                     <Form.Control
@@ -83,27 +81,26 @@ function SearchPage() {
                                         isInvalid={!!errors.keyword}
                                         {...register("keyword")}
                                     />
-                                    
                                     <Form.Control.Feedback type="invalid" className="fw-bold">
                                         {errors.keyword?.message}
                                     </Form.Control.Feedback>
                                 </Form.Group>
                             </Col>
 
+                            {/* MODIFICATION 2 : Le Select devient un Control classique de type "text" */}
                             <Col md={4}>
                                 <Form.Group controlId="searchRegion">
                                     <Form.Label className="fw-semibold text-secondary">Filtrer par région</Form.Label>
-                                    <Form.Select className="py-2.5" {...register("region")}>
-                                        <option value="">Toutes les régions</option>
-                                        {uniqueRegions.map((reg, index) => (
-                                            <option key={index} value={reg.toLowerCase()}>{reg}</option>
-                                        ))}
-                                    </Form.Select>
+                                    <Form.Control 
+                                        type="text"
+                                        placeholder="Exemple: Europe, Asie, Afrique..."
+                                        className="py-2.5"
+                                        {...register("region")}
+                                    />
                                 </Form.Group>
                             </Col>
                             
-                            
-                            <Col md={2} className="d-flex gap-2">
+                            <Col md={3} className="d-flex gap-2">
                                 <Button type="submit" variant="primary" className="w-100 fw-bold py-2.5">
                                     Rechercher
                                 </Button>
@@ -118,19 +115,17 @@ function SearchPage() {
                 </Card.Body>
             </Card>
 
-        
-            {currentSearch && (
+            {(currentSearch || currentRegion) && (
                 <div className="mt-4">
                     <div className="d-flex justify-content-between align-items-center mb-4">
                         <h2 className="h4 mb-0 text-dark">
-                            Résultats de la recherche pour : <span className="text-primary">"{currentSearch}"</span>
+                            Résultats de la recherche
                         </h2>
                         <Badge bg="secondary" className="px-3 py-2 rounded-pill">
                             {filteredDestinations.length} trouvé{filteredDestinations.length > 1 ? "s" : ""}
                         </Badge>
                     </div>
 
-                  
                     {filteredDestinations.length > 0 ? (
                         <Row xs={1} md={2} lg={3} className="g-4">
                             {filteredDestinations.map((destination) => (
@@ -170,7 +165,6 @@ function SearchPage() {
                             ))}
                         </Row>
                     ) : (
-                        
                         <Alert variant="warning" className="border-0 shadow-sm rounded-4 py-5 text-center mt-4">
                             <div className="display-4 mb-3">🗺️</div>
                             <h4 className="fw-bold">Aucun voyage ne correspond à vos critères</h4>
