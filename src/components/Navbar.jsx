@@ -27,6 +27,9 @@ function Navbar(){
                         <Nav.Link as={NavLink} to='/destination'>
                             Nos destinations
                         </Nav.Link>
+                         <Nav.Link as={NavLink} to='/search'>
+                            Rechercher
+                        </Nav.Link>
                     </Nav>
 
                 </BootstapNavbar.Collapse>

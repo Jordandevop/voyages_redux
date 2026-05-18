@@ -17,4 +17,5 @@ const getRegionColor = (region) => {
     }
 };
 
+
 export default getRegionColor;

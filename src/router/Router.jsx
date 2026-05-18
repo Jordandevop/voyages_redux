@@ -12,6 +12,7 @@ import AboutPage from "../pages/AboutPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import DestinationPage from "../pages/DestinationsPage";
 import DestinationDetailPage from "../pages/DestinationDetailPage";
+import SearchPage from "../pages/SearchPage";
 
 const router = createBrowserRouter([
 
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
             {
                 path:"destination/:slug",
                 element: <DestinationDetailPage/>
+            },
+            {
+                path: "search",
+                element: <SearchPage/>
             },
             {
                 path: "*",
