@@ -17,6 +17,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
         budget: "Élevé, environ 100-180€/jour",
         timezone: "UTC+9",
+        latitude: "36.2048",
+        longitude: "138.2529",
     },
     {
         id: 2,
@@ -32,10 +34,12 @@ export const destinations = [
         language: "Islandais (anglais largement parlé)",
         currency: "Couronne islandaise (kr, ISK)",
         climate: "Subarctique, frais toute l'année, vent fréquent",
-        bestSeason: "Juin-août pour le soleil de minuit, septembre-mars pour les aurores boréales",
+        bestSeason: "Juin-août pour le soleil de minuit, septembre-mars pour les aurores béales",
         visa: "Pas de visa requis pour les Français (espace Schengen)",
         budget: "Très élevé, environ 150-250€/jour",
         timezone: "UTC+0",
+        latitude: "64.9631",
+        longitude: "-19.0208",
     },
     {
         id: 3,
@@ -55,6 +59,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
         budget: "Faible à moyen, environ 30-70€/jour",
         timezone: "UTC+1",
+        latitude: "31.7917",
+        longitude: "-7.0926",
     },
     {
         id: 4,
@@ -74,6 +80,8 @@ export const destinations = [
         visa: "AVE requise pour les Français (équivalent ESTA, séjours < 6 mois)",
         budget: "Élevé, environ 100-160€/jour",
         timezone: "UTC-3:30 à UTC-8 (6 fuseaux)",
+        latitude: "56.1304",
+        longitude: "-106.3468",
     },
     {
         id: 5,
@@ -93,6 +101,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (espace Schengen)",
         budget: "Élevé, environ 100-150€/jour",
         timezone: "UTC+1",
+        latitude: "60.1282",
+        longitude: "18.6435",
     },
     {
         id: 6,
@@ -112,6 +122,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 183 jours)",
         budget: "Faible à moyen, environ 40-80€/jour",
         timezone: "UTC-5",
+        latitude: "-9.1900",
+        longitude: "-75.0152",
     },
     {
         id: 7,
@@ -131,6 +143,8 @@ export const destinations = [
         visa: "NZeTA requise pour les Français (séjours < 3 mois)",
         budget: "Élevé, environ 100-160€/jour",
         timezone: "UTC+12 (UTC+13 en été)",
+        latitude: "-40.9006",
+        longitude: "174.8860",
     },
     {
         id: 8,
@@ -150,6 +164,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (espace Schengen)",
         budget: "Moyen à élevé, environ 70-140€/jour",
         timezone: "UTC+1",
+        latitude: "41.8719",
+        longitude: "12.5674",
     },
     {
         id: 9,
@@ -169,6 +185,8 @@ export const destinations = [
         visa: "Visa requis à l'arrivée pour les Français (environ 35€)",
         budget: "Faible, environ 30-60€/jour",
         timezone: "UTC+3",
+        latitude: "-18.7669",
+        longitude: "46.8691",
     },
     {
         id: 10,
@@ -188,6 +206,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
         budget: "Moyen, environ 60-120€/jour",
         timezone: "UTC-6",
+        latitude: "9.7489",
+        longitude: "-83.7534",
     },
     {
         id: 11,
@@ -207,6 +227,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (espace Schengen)",
         budget: "Moyen, environ 60-110€/jour",
         timezone: "UTC+0",
+        latitude: "39.3999",
+        longitude: "-8.2245",
     },
     {
         id: 12,
@@ -226,6 +248,8 @@ export const destinations = [
         visa: "eVisitor requis pour les Français (gratuit, < 3 mois)",
         budget: "Élevé, environ 100-170€/jour",
         timezone: "UTC+8 à UTC+11 (3 fuseaux)",
+        latitude: "-25.2744",
+        longitude: "133.7751",
     },
     {
         id: 13,
@@ -245,6 +269,8 @@ export const destinations = [
         visa: "Visa requis à l'arrivée pour les Français (environ 25€)",
         budget: "Faible, environ 30-70€/jour",
         timezone: "UTC+2",
+        latitude: "26.8206",
+        longitude: "30.8025",
     },
     {
         id: 14,
@@ -264,6 +290,8 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
         budget: "Moyen, environ 50-100€/jour",
         timezone: "UTC-3 à UTC-5",
+        latitude: "-14.2350",
+        longitude: "-51.9253",
     },
     {
         id: 15,
@@ -283,5 +311,7 @@ export const destinations = [
         visa: "Pas de visa requis pour les Français (séjours < 30 jours)",
         budget: "Faible, environ 30-70€/jour",
         timezone: "UTC+7",
-    },
+        latitude: "15.8700",
+        longitude: "100.9925",
+    }
 ];
