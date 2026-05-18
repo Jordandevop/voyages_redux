@@ -9,6 +9,13 @@ export const destinations = [
             "Le Japon melange traditions anciennes, temples, megalopoles modernes et paysages naturels spectaculaires.",
         image:
             "https://cdn.pixabay.com/photo/2020/01/31/20/03/japan-4808857_1280.jpg",
+        language: "Japonais",
+        currency: "Yen japonais (¥, JPY)",
+        climate: "Tempéré, quatre saisons marquées, étés chauds et humides",
+        bestSeason: "Printemps (mars-mai) pour les cerisiers, automne (octobre-novembre) pour les érables",
+        visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
+        budget: "Élevé, environ 100-180€/jour",
+        timezone: "UTC+9",
     },
     {
         id: 2,
@@ -20,6 +27,13 @@ export const destinations = [
             "L'Islande est connue pour ses volcans, glaciers, cascades, sources chaudes et paysages lunaires.",
         image:
             "https://cdn.pixabay.com/photo/2019/11/24/14/06/iceland-4649477_1280.jpg",
+        language: "Islandais (anglais largement parlé)",
+        currency: "Couronne islandaise (kr, ISK)",
+        climate: "Subarctique, frais toute l'année, vent fréquent",
+        bestSeason: "Juin-août pour le soleil de minuit, septembre-mars pour les aurores boréales",
+        visa: "Pas de visa requis pour les Français (espace Schengen)",
+        budget: "Très élevé, environ 150-250€/jour",
+        timezone: "UTC+0",
     },
     {
         id: 3,
@@ -31,6 +45,13 @@ export const destinations = [
             "Le Maroc offre des medinas, des montagnes, le desert, une cuisine riche et une forte identite culturelle.",
         image:
             "https://cdn.pixabay.com/photo/2017/05/27/22/33/morocco-2349647_1280.jpg",
+        language: "Arabe et berbère (français très répandu)",
+        currency: "Dirham marocain (DH, MAD)",
+        climate: "Méditerranéen au nord, désertique au sud",
+        bestSeason: "Printemps (mars-mai) et automne (septembre-novembre)",
+        visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
+        budget: "Faible à moyen, environ 30-70€/jour",
+        timezone: "UTC+1",
     },
     {
         id: 4,
@@ -42,6 +63,13 @@ export const destinations = [
             "Le Canada propose de grands espaces naturels, des lacs, des forets, des montagnes et des villes multiculturelles.",
         image:
             "https://cdn.pixabay.com/photo/2019/08/01/17/23/ottawa-4377995_1280.jpg",
+        language: "Anglais et français",
+        currency: "Dollar canadien (C$, CAD)",
+        climate: "Continental, étés doux, hivers très froids",
+        bestSeason: "Juin-septembre pour l'été, décembre-mars pour le ski",
+        visa: "AVE requise pour les Français (équivalent ESTA, séjours < 6 mois)",
+        budget: "Élevé, environ 100-160€/jour",
+        timezone: "UTC-3:30 à UTC-8 (6 fuseaux)",
     },
     {
         id: 5,
@@ -53,6 +81,13 @@ export const destinations = [
             "La Suède est un pays scandinave composé de milliers d'îles côtières et lacs intérieurs, ainsi que de vastes forêts boréales et de montagnes glaciaires.",
         image:
             "https://cdn.pixabay.com/photo/2016/12/29/13/25/lappland-sweden-1938531_1280.jpg",
+        language: "Suédois (anglais largement parlé)",
+        currency: "Couronne suédoise (kr, SEK)",
+        climate: "Tempéré au sud, subarctique au nord",
+        bestSeason: "Juin-août pour le soleil de minuit, décembre-mars pour le ski et les aurores",
+        visa: "Pas de visa requis pour les Français (espace Schengen)",
+        budget: "Élevé, environ 100-150€/jour",
+        timezone: "UTC+1",
     },
     {
         id: 6,
@@ -64,6 +99,13 @@ export const destinations = [
             "Le Pérou abrite une partie de la forêt amazonienne et le Machu Picchu, une ancienne cité inca perchée dans les Andes.",
         image:
             "https://cdn.pixabay.com/photo/2016/01/13/17/48/machupicchu-1138641_1280.jpg",
+        language: "Espagnol et quechua",
+        currency: "Sol péruvien (S/, PEN)",
+        climate: "Côte aride, montagnes fraîches, jungle tropicale",
+        bestSeason: "Mai-septembre (saison sèche, idéal pour le Machu Picchu)",
+        visa: "Pas de visa requis pour les Français (séjours < 183 jours)",
+        budget: "Faible à moyen, environ 40-80€/jour",
+        timezone: "UTC-5",
     },
     {
         id: 7,
@@ -75,6 +117,13 @@ export const destinations = [
             "La Nouvelle-Zélande se distingue par ses volcans, ses fjords spectaculaires, ses plages de sable fin et sa culture maorie.",
         image:
             "https://cdn.pixabay.com/photo/2016/01/01/18/24/wellington-1116880_1280.jpg",
+        language: "Anglais et maori",
+        currency: "Dollar néo-zélandais (NZ$, NZD)",
+        climate: "Tempéré océanique, varié selon les régions",
+        bestSeason: "Décembre-février (été austral), juin-août pour le ski",
+        visa: "NZeTA requise pour les Français (séjours < 3 mois)",
+        budget: "Élevé, environ 100-160€/jour",
+        timezone: "UTC+12 (UTC+13 en été)",
     },
     {
         id: 8,
@@ -86,6 +135,13 @@ export const destinations = [
             "L'Italie est réputée pour sa cuisine mondiale, ses chefs-d'œuvre artistiques, son histoire romaine et ses côtes méditerranéennes.",
         image:
             "https://cdn.pixabay.com/photo/2014/08/20/22/27/colosseum-422942_1280.jpg",
+        language: "Italien",
+        currency: "Euro (€, EUR)",
+        climate: "Méditerranéen, étés chauds, hivers doux au sud",
+        bestSeason: "Avril-juin et septembre-octobre",
+        visa: "Pas de visa requis pour les Français (espace Schengen)",
+        budget: "Moyen à élevé, environ 70-140€/jour",
+        timezone: "UTC+1",
     },
     {
         id: 9,
@@ -97,6 +153,13 @@ export const destinations = [
             "Madagascar est une immense nation insulaire célèbre pour ses baobabs, ses lémuriens et sa biodiversité unique au monde.",
         image:
             "https://cdn.pixabay.com/photo/2019/11/04/14/37/madagascar-4601292_1280.jpg",
+        language: "Malgache et français",
+        currency: "Ariary malgache (Ar, MGA)",
+        climate: "Tropical, humide à l'est, sec à l'ouest",
+        bestSeason: "Avril-novembre (saison sèche)",
+        visa: "Visa requis à l'arrivée pour les Français (environ 35€)",
+        budget: "Faible, environ 30-60€/jour",
+        timezone: "UTC+3",
     },
     {
         id: 10,
@@ -108,6 +171,13 @@ export const destinations = [
             "Le Costa Rica est un pays d'Amérique centrale réputé pour ses plages, ses volcans, ses forêts tropicales et sa philosophie de vie 'Pura Vida'.",
         image:
             "https://cdn.pixabay.com/photo/2015/04/11/22/15/volcano-718277_1280.jpg",
+        language: "Espagnol",
+        currency: "Colón costaricien (₡, CRC)",
+        climate: "Tropical, deux saisons (sèche et humide)",
+        bestSeason: "Décembre-avril (saison sèche)",
+        visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
+        budget: "Moyen, environ 60-120€/jour",
+        timezone: "UTC-6",
     },
     {
         id: 11,
@@ -119,6 +189,13 @@ export const destinations = [
             "Le Portugal séduit par ses plages dorées de l'Algarve, ses châteaux médiévaux, sa musique Fado et son architecture recouverte d'azulejos.",
         image:
             "https://cdn.pixabay.com/photo/2021/05/30/16/00/port-6296267_1280.jpg",
+        language: "Portugais",
+        currency: "Euro (€, EUR)",
+        climate: "Méditerranéen, doux toute l'année",
+        bestSeason: "Avril-juin et septembre-octobre",
+        visa: "Pas de visa requis pour les Français (espace Schengen)",
+        budget: "Moyen, environ 60-110€/jour",
+        timezone: "UTC+0",
     },
     {
         id: 12,
@@ -130,6 +207,13 @@ export const destinations = [
             "L'Australie offre des plages de surf mythiques, la Grande Barrière de corail, l'Outback sauvage et une faune unique au monde.",
         image:
             "https://cdn.pixabay.com/photo/2018/11/05/11/46/australia-3795891_1280.jpg",
+        language: "Anglais",
+        currency: "Dollar australien (AU$, AUD)",
+        climate: "Très varié, tropical au nord, tempéré au sud",
+        bestSeason: "Septembre-novembre et mars-mai (selon la région)",
+        visa: "eVisitor requis pour les Français (gratuit, < 3 mois)",
+        budget: "Élevé, environ 100-170€/jour",
+        timezone: "UTC+8 à UTC+11 (3 fuseaux)",
     },
     {
         id: 13,
@@ -141,6 +225,13 @@ export const destinations = [
             "L'Égypte fascine par ses millénaires d'histoire, ses pyramides majestueuses, ses temples pharaoniques le long du Nil et ses récifs de la mer Rouge.",
         image:
             "https://cdn.pixabay.com/photo/2017/08/13/17/48/egypt-tour-packages-2637992_1280.jpg",
+        language: "Arabe",
+        currency: "Livre égyptienne (£E, EGP)",
+        climate: "Désertique, très chaud en été",
+        bestSeason: "Octobre-avril (températures supportables)",
+        visa: "Visa requis à l'arrivée pour les Français (environ 25€)",
+        budget: "Faible, environ 30-70€/jour",
+        timezone: "UTC+2",
     },
     {
         id: 14,
@@ -152,6 +243,13 @@ export const destinations = [
             "Le Brésil est célèbre pour son carnaval vibrant, la plage de Copacabana, la statue du Christ Rédempteur et l'immensité de l'Amazonie.",
         image:
             "https://cdn.pixabay.com/photo/2016/07/22/04/03/rio-de-janeiro-1534128_1280.jpg",
+        language: "Portugais",
+        currency: "Real brésilien (R$, BRL)",
+        climate: "Tropical, équatorial en Amazonie",
+        bestSeason: "Avril-octobre (saison sèche, climat plus agréable)",
+        visa: "Pas de visa requis pour les Français (séjours < 90 jours)",
+        budget: "Moyen, environ 50-100€/jour",
+        timezone: "UTC-3 à UTC-5",
     },
     {
         id: 15,
@@ -163,5 +261,12 @@ export const destinations = [
             "La Thaïlande est réputée pour ses plages tropicales, ses palais royaux opulents, ses ruines anciennes et ses temples ornés de figures de Bouddha.",
         image:
             "https://cdn.pixabay.com/photo/2023/05/16/09/15/bangkok-7997046_1280.jpg",
+        language: "Thaï",
+        currency: "Baht thaïlandais (฿, THB)",
+        climate: "Tropical, trois saisons (chaude, pluvieuse, fraîche)",
+        bestSeason: "Novembre-février (saison fraîche et sèche)",
+        visa: "Pas de visa requis pour les Français (séjours < 30 jours)",
+        budget: "Faible, environ 30-70€/jour",
+        timezone: "UTC+7",
     },
 ];

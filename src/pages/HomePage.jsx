@@ -22,7 +22,7 @@ function HomePage() {
                                     Explorez des cultures uniques, des paysages à couper le souffle et 
                                     planifiez le voyage qui vous ressemble à travers notre sélection exclusive.
                                 </p>
-                                <Button as={Link} to="/" variant="outline-primary">
+                                <Button as={Link} to="/destinationPage" variant="outline-primary">
                                     Voir les destinations
                                 </Button>
                             </Card.Body>
