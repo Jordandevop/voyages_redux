@@ -80,7 +80,7 @@ function AboutPage() {
             <div className="text-center mt-5 p-4 bg-primary text-white rounded-4 shadow">
                 <h3 className="mb-3">Prêt à partir à l'aventure ?</h3>
                 <p className="mb-4">Consultez nos destinations ou contactez-nous pour organiser votre voyage idéal.</p>
-                <Button as={Link} to="/destinationPage" variant="light" size="lg" className="px-5 fw-bold text-primary rounded-pill">
+                <Button as={Link} to="/destination" variant="light" size="lg" className="px-5 fw-bold text-primary rounded-pill">
                     Voir les destinations
                 </Button>
             </div>

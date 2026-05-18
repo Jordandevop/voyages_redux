@@ -19,7 +19,7 @@ const router = createBrowserRouter([
         path:"/",
         element: <MainLayout/>,
         // toutes les pages utilisent MainLayout
-        //errorElement: <NotFoundPage/>,
+        errorElement: <NotFoundPage/>,
         children: [
             {
                 index: true,
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
                 element: <AboutPage/>
             },
             {
-                path: "destinationPage",
+                path: "destination",
                 element: <DestinationPage/>
             },
             {

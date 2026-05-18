@@ -9,11 +9,29 @@ function DestinationDetailPage() {
 
     if (!destination) {
         return (
-            <Container className="py-5 text-center">
-                <h2>Destination introuvable</h2>
-                <Button as={Link} to="/destinations" variant="primary" className="mt-3">
-                    Retour aux destinations
-                </Button>
+            <Container className="py-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Card className="text-center border-0 shadow-lg rounded-4 p-4 p-md-5" style={{ maxWidth: "600px" }}>
+                    <Card.Body>
+                        <div className="display-1 mb-4">🗺️</div>
+                        
+                        <h2 className="fw-bold text-dark mb-3">Destination introuvable</h2>
+                        
+                        <p className="text-muted fs-5 mb-4">
+                            Il semblerait que cette destination ait disparu de notre carte ou n'existe pas. 
+                            Ne vous inquiétez pas, de nombreuses autres merveilles vous attendent !
+                        </p>
+                        
+                        <Button 
+                            as={Link} 
+                            to="/destination" 
+                            variant="primary" 
+                            size="lg" 
+                            className="rounded-pill px-5 shadow-sm fw-bold"
+                        >
+                            Explorer d'autres horizons
+                        </Button>
+                    </Card.Body>
+                </Card>
             </Container>
         );
     }
@@ -21,7 +39,7 @@ function DestinationDetailPage() {
     return (
         <Container className="py-5">
 
-            <Button as={Link} to="/destinationPage" variant="outline-secondary" className="mb-4 rounded-pill px-4">
+            <Button as={Link} to="/destination" variant="outline-secondary" className="mb-4 rounded-pill px-4">
                 &larr; Retour aux destinations
             </Button>
             
@@ -67,7 +85,8 @@ function DestinationDetailPage() {
                 </Col>
             </Row>
 
-            <div className="mt-5 pt-4 border-top">
+            <hr />
+            <div className="mt-5 pt-4">
                 <h3 className="fw-bold mb-4">Informations pratiques</h3>
                 <Row className="g-4">
                     <Col md={4}>

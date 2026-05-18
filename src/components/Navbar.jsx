@@ -24,7 +24,7 @@ function Navbar(){
                         <Nav.Link as={NavLink} to="/about">
                             A propos
                         </Nav.Link>
-                        <Nav.Link as={NavLink} to='/destinationPage'>
+                        <Nav.Link as={NavLink} to='/destination'>
                             Nos destinations
                         </Nav.Link>
                     </Nav>
