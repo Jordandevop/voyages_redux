@@ -14,6 +14,7 @@ const searchSchema = yup.object({
     budget: yup.string() 
 });
 
+
 function SearchPage() {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();

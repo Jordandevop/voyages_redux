@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const registerSchema = yup.object({
   username: yup
@@ -54,7 +54,11 @@ function RegisterPage() {
     },
   });
 
+  const navigate = useNavigate()
+
   const onSubmit = (data) => {
+    localStorage.setItem("connectedUser", JSON.stringify(data));
+    navigate("/profile");
     console.log("Données d'inscription validées :", data);
   };
 

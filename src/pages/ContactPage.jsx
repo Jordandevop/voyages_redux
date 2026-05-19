@@ -6,7 +6,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 
 const contactSchema = yup.object({
-    fullName: yup.string()
+    name: yup.string()
         .trim()
         .required("Veuillez saisir votre nom et prénom.")
         .min(3, "Votre nom doit contenir au moins 3 caractères."),
@@ -21,7 +21,7 @@ const contactSchema = yup.object({
     message: yup.string()
         .trim()
         .required("Le message ne peut pas être vide.")
-        .min(15, "Votre message doit faire au moins 15 caractères pour être traité.")
+        .min(10, "Votre message doit faire au moins 10 caractères pour être traité.")
 }).required();
 
 function ContactPage() {
@@ -38,7 +38,7 @@ function ContactPage() {
     } = useForm({
         resolver: yupResolver(contactSchema),
         defaultValues: {
-            fullName: "",
+            name: "",
             email: "",
             subject: "",
             message: ""
@@ -123,12 +123,12 @@ function ContactPage() {
                                                 <Form.Control 
                                                     type="text" 
                                                     placeholder="John Doe" 
-                                                    isInvalid={!!errors.fullName}
+                                                    isInvalid={!!errors.name}
                                                     disabled={isSending}
-                                                    {...register("fullName")}
+                                                    {...register("name")}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
-                                                    {errors.fullName?.message}
+                                                    {errors.name?.message}
                                                 </Form.Control.Feedback>
                                             </Form.Group>
                                         </Col>
