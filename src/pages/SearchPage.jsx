@@ -1,6 +1,6 @@
 import { Button, Card, Col, Row, Badge, Alert, Form, Container } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-import { useNavigate, useSearchParams, Link } from "react-router-dom";
+import { useNavigate, useSearchParams} from "react-router-dom";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { destinations } from "../data/destinations";

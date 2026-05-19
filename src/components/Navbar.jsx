@@ -33,6 +33,12 @@ function Navbar(){
                          <Nav.Link as={NavLink} to='/contact'>
                             Contact
                         </Nav.Link>
+                         <Nav.Link as={NavLink} to='/register'>
+                            Inscription
+                        </Nav.Link>
+                        <Nav.Link as={NavLink} to='/login'>
+                            Connexion
+                        </Nav.Link>
                     </Nav>
 
                 </BootstapNavbar.Collapse>

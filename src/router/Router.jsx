@@ -15,6 +15,8 @@ import DestinationDetailPage from "../pages/DestinationDetailPage";
 import SearchPage from "../pages/SearchPage";
 import ContactPage from "../pages/ContactPage";
 import RegionPage from "../pages/RegionPage";
+import RegisterPage from "../pages/RegisterPage";
+import LoginPage from "../pages/LoginPage";
 
 const router = createBrowserRouter([
 
@@ -52,6 +54,14 @@ const router = createBrowserRouter([
             {
                 path:"region/:regionName",
                 element: <RegionPage/>
+            },
+            {
+                path: "register",
+                element: <RegisterPage/>
+            },
+            {
+                path: "login",
+                element: <LoginPage/>
             },
             {
                 path: "*",
