@@ -1,40 +1,37 @@
-import {
-  Container,
-  Card,
-  Row,
-  Col,
-  Button,
-  Image,
-  Badge,
-  Spinner,
-  Alert,
-} from "react-bootstrap";
+import { Container, Card, Row, Col, Button, Image, Badge, Spinner, Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
 
 function ProfilePage() {
-  const { user, logout } = useAuth();
+  const { user, token, logout } = useAuth();
   const [fullProfile, setFullProfile] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
+
 
   useEffect(() => {
-    if (!user?.id) return;
+    if (!token) return;
+
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`https://dummyjson.com/users/${user.id}`);
-        if (!response.ok)
-          throw new Error("Erreur lors de la récupération des données.");
+        const response = await fetch('https://dummyjson.com/auth/me', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`, 
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Erreur de sécurité : Impossible de récupérer vos données.");
+        }
+
         const data = await response.json();
         setFullProfile(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setIsLoading(false);
-      }
+      } catch (error) {
+       
+      } 
     };
+
     fetchUserProfile();
-  }, [user]);
+  }, [token]); 
 
   return (
     <Container className="py-5">
@@ -49,7 +46,7 @@ function ProfilePage() {
                     roundedCircle
                     className="border border-4 border-white shadow"
                     style={{
-                      marginTop:'10px',
+                      marginTop: '10px',
                       width: "130px",
                       height: "130px",
                       backgroundColor: "white",
@@ -120,8 +117,7 @@ function ProfilePage() {
                     <div className="mb-2">
                       <small className="text-muted d-block">Ville</small>
                       <span className="fw-semibold">
-                        {fullProfile?.address?.city},{" "}
-                        {fullProfile?.address?.stateCode}
+                        {fullProfile?.address?.city}, {fullProfile?.address?.stateCode}
                       </span>
                     </div>
                   </div>
