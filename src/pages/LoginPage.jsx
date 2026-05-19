@@ -1,14 +1,13 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
+import { Container, Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 const loginSchema = yup.object({
   username: yup.string().required("Le nom d'utilisateur est requis"),
-
   password: yup.string().required("Le mot de passe est requis"),
 });
 
@@ -16,6 +15,7 @@ function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [apiError, setApiError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -30,30 +30,27 @@ function LoginPage() {
   });
 
   const onSubmit = async (data) => {
-    console.log("Tentative de connexion validée par Yup :", data);
     setApiError("");
     try {
-      const response = await fetch("https://dummyjson.com/auth/login",{
+      const response = await fetch("https://dummyjson.com/auth/login", {
         method: "POST",
-        headers:{
-          "Content-Type": "application/json"
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username:data.username,
-          password:data.password,
-        })
-      }
-    )
-      if(!response.ok){
-        throw new Error("Identifiants incorrects")
+          username: data.username,
+          password: data.password,
+        }),
+      });
+      if (!response.ok) {
+        throw new Error("Identifiants incorrects");
       }
       const result = await response.json();
       console.log(result);
-      login(result, result.accessToken)
-      navigate("/profile")
-      
+      login(result, result.accessToken);
+      navigate("/profile");
     } catch (error) {
-      setApiError(error.message)
+      setApiError(error.message);
     }
   };
 
@@ -97,16 +94,26 @@ function LoginPage() {
                     <Form.Label className="fw-semibold text-secondary">
                       Mot de passe
                     </Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Ex: 123password/"
-                      className="py-2.5"
-                      isInvalid={!!errors.password}
-                      {...register("password")}
-                    />
-                    <Form.Control.Feedback type="invalid" className="fw-bold">
-                      {errors.password?.message}
-                    </Form.Control.Feedback>
+                    <div className="position-relative">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Ex: 123password/"
+                        className="py-2.5 password-input"
+                        isInvalid={!!errors.password}
+                        {...register("password")}
+                      />
+                      <span
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-muted password-icon"
+                      >
+                        {showPassword ? "🙉" : "🙈"}
+                      </span>
+                    </div>
+                    {errors.password && (
+                      <div className="invalid-feedback d-block fw-bold mt-1">
+                        {errors.password.message}
+                      </div>
+                    )}
                   </Form.Group>
                 </Col>
               </Row>

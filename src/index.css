@@ -20,3 +20,16 @@ body {
   min-height: 360px;
   object-fit: cover;
 }
+
+.password-input {
+  padding-right: 45px !important; 
+}
+
+.password-icon {
+  cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+}

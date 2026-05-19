@@ -17,7 +17,8 @@ import ContactPage from "../pages/ContactPage";
 import RegionPage from "../pages/RegionPage";
 import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
-import ProfilePage from "../pages/ProfilPage";
+import ProfilePage from "../pages/ProfilePage";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const router = createBrowserRouter([
 
@@ -66,7 +67,11 @@ const router = createBrowserRouter([
             },
             {
                 path: "profile",
-                element: <ProfilePage/>
+                element: (
+                        <ProtectedRoute>
+                            <ProfilePage/>
+                        </ProtectedRoute>
+                ),
             },
             {
                 path: "*",

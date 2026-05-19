@@ -12,20 +12,6 @@ function ProfilePage() {
     logout(); 
     navigate("/login"); 
   };
-  if (!isAuthenticated || !user) {
-    return (
-      <Container className="py-5 text-center">
-        <Card className="border-0 shadow-sm p-5 rounded-4 mx-auto" style={{ maxWidth: "500px" }}>
-            <div className="display-1 mb-3">🔒</div>
-            <h3 className="fw-bold">Accès refusé</h3>
-            <p className="text-muted">Vous devez être connecté pour consulter votre profil.</p>
-            <Button onClick={() => navigate("/login")} variant="primary" className="rounded-pill px-4">
-                Se connecter
-            </Button>
-        </Card>
-      </Container>
-    );
-  }
 
   return (
     <Container className="py-5">

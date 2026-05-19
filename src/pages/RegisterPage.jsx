@@ -59,7 +59,6 @@ function RegisterPage() {
   const onSubmit = (data) => {
     localStorage.setItem("connectedUser", JSON.stringify(data));
     navigate("/profile");
-    console.log("Données d'inscription validées :", data);
   };
 
   return (
