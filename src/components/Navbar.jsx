@@ -39,12 +39,10 @@ function Navbar() {
                         </Nav.Link>
 
                         {isAuthenticated ? (
-                            // S'il est connecté
                             <Nav.Link as={NavLink} to='/profile' className="fw-bold text-warning">
                                 👤 Mon Profil
                             </Nav.Link>
                         ) : (
-                            // S'il n'est pas connecté
                             <>
                                 <Nav.Link as={NavLink} to='/register'>
                                     Inscription
