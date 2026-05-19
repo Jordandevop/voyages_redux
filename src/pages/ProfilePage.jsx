@@ -1,63 +1,142 @@
-import { Container, Card, Row, Col, Button, Image } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; 
+import {
+  Container,
+  Card,
+  Row,
+  Col,
+  Button,
+  Image,
+  Badge,
+  Spinner,
+  Alert,
+} from "react-bootstrap";
+import { useAuth } from "../context/AuthContext";
+import { useState, useEffect } from "react";
 
 function ProfilePage() {
-  const navigate = useNavigate();
-  
+  const { user, logout } = useAuth();
+  const [fullProfile, setFullProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const { user, logout, isAuthenticated } = useAuth(); 
-
-  const handleLogout = () => {
-    logout(); 
-    navigate("/login"); 
-  };
+  useEffect(() => {
+    if (!user?.id) return;
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`https://dummyjson.com/users/${user.id}`);
+        if (!response.ok)
+          throw new Error("Erreur lors de la récupération des données.");
+        const data = await response.json();
+        setFullProfile(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchUserProfile();
+  }, [user]);
 
   return (
     <Container className="py-5">
       <Row className="justify-content-center">
-        <Col md={8} lg={6}>
-          <Card className="border-0 shadow-sm rounded-4 overflow-hidden bg-white p-4">
-            <Card.Body className="text-center">
-              
-              <div className="mb-4">
-                <Image 
-                  src={user.image || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"} 
-                  roundedCircle 
-                  style={{ width: '120px', height: '120px', objectFit: 'cover' }}
-                  className="shadow-sm border"
-                  alt="Avatar utilisateur"
-                />
+        <Col md={10} lg={7}>
+          <Card className="border-0 shadow-lg rounded-4 overflow-hidden">
+            <Card.Body className="p-4 pt-0">
+              <Row className="align-items-end mb-4">
+                <Col xs="auto">
+                  <Image
+                    src={fullProfile?.image}
+                    roundedCircle
+                    className="border border-4 border-white shadow"
+                    style={{
+                      marginTop:'10px',
+                      width: "130px",
+                      height: "130px",
+                      backgroundColor: "white",
+                      objectFit: "cover",
+                    }}
+                  />
+                </Col>
+                <Col>
+                  <div className="mb-2">
+                    <h2 className="fw-bold d-inline-block me-2 mb-0">
+                      {fullProfile?.firstName} {fullProfile?.lastName}
+                    </h2>
+                    <Badge
+                      bg={fullProfile?.role === "admin" ? "danger" : "success"}
+                      className="rounded-pill px-3 py-2 align-middle shadow-sm"
+                      style={{
+                        fontSize: "0.7rem",
+                        letterSpacing: "1px",
+                        textTransform: "uppercase",
+                      }}
+                    >
+                      {fullProfile?.role}
+                    </Badge>
+                  </div>
+                  <p className="text-muted mb-0">@{fullProfile?.username}</p>
+                </Col>
+                <Col xs="auto" className="d-none d-md-block">
+                  <Button
+                    variant="outline-danger"
+                    className="rounded-pill fw-bold"
+                    onClick={logout}
+                  >
+                    Déconnexion
+                  </Button>
+                </Col>
+              </Row>
+
+              <Row className="g-4">
+                <Col md={6}>
+                  <div className="p-3 rounded-4 bg-light h-100 border border-light">
+                    <h6 className="text-primary fw-bold mb-3 border-bottom pb-2">
+                      📍 Coordonnées
+                    </h6>
+                    <div className="mb-2">
+                      <small className="text-muted d-block">Email</small>
+                      <span className="fw-semibold">{fullProfile?.email}</span>
+                    </div>
+                    <div className="mb-2">
+                      <small className="text-muted d-block">Téléphone</small>
+                      <span className="fw-semibold">{fullProfile?.phone}</span>
+                    </div>
+                  </div>
+                </Col>
+
+                <Col md={6}>
+                  <div className="p-3 rounded-4 bg-light h-100 border border-light">
+                    <h6 className="text-primary fw-bold mb-3 border-bottom pb-2">
+                      👤 Informations
+                    </h6>
+                    <div className="mb-2">
+                      <small className="text-muted d-block">
+                        Âge / Anniversaire
+                      </small>
+                      <span className="fw-semibold">
+                        {fullProfile?.age} ans ({fullProfile?.birthDate})
+                      </span>
+                    </div>
+                    <div className="mb-2">
+                      <small className="text-muted d-block">Ville</small>
+                      <span className="fw-semibold">
+                        {fullProfile?.address?.city},{" "}
+                        {fullProfile?.address?.stateCode}
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+              </Row>
+
+              <div className="d-grid d-md-none mt-4">
+                <Button
+                  variant="danger"
+                  className="rounded-pill fw-bold py-2"
+                  onClick={logout}
+                >
+                  Déconnexion
+                </Button>
               </div>
-
-              <h3 className="fw-bold text-dark mb-1">
-                {user.firstName} {user.lastName}
-              </h3>
-              <p className="text-primary fw-medium small mb-4">@{user.username}</p>
-
-              <hr className="opacity-25 my-3" />
-
-              <div className="text-start px-3 mb-4">
-                <div className="mb-3">
-                  <small className="text-muted d-block fw-semibold">Adresse Email</small>
-                  <span className="text-secondary">{user.email}</span>
-                </div>
-                <div>
-                  <small className="text-muted d-block fw-semibold">Genre</small>
-                  <span className="text-secondary text-capitalize">
-                    {user.gender === "male" ? "Homme" : user.gender === "female" ? "Femme" : "Non défini"}
-                  </span>
-                </div>
-              </div>
-
-              <Button
-                variant="outline-danger"
-                className="w-100 rounded-pill fw-bold py-2"
-                onClick={handleLogout} 
-              >
-                Déconnexion
-              </Button>
-
             </Card.Body>
           </Card>
         </Col>
