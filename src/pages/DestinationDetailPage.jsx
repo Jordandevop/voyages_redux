@@ -1,15 +1,49 @@
+import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { Container, Button, Row, Col, Badge, Card } from "react-bootstrap";
-import { destinations } from "../data/destinations";
+import { Container, Button, Row, Col, Badge, Card, Spinner } from "react-bootstrap";
+import { apiRequest } from "../api/apiClient";
+import FavoriteButton from "../components/FavoriteButton";
 
 function DestinationDetailPage() {
     const { slug } = useParams();
     
-    const destination = destinations.find(
-        (dest) => dest.slug.toLowerCase() === slug?.toLowerCase()
-    );
+    const [destination, setDestination] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    if (!destination) {
+    useEffect(() => {
+        const fetchDestination = async () => {
+            setIsLoading(true);
+            setError(null);
+            try {
+            
+                const data = await apiRequest(`/destinations/show.php?slug=${slug}`, { 
+                    method: 'GET' 
+                });
+                
+                setDestination(data?.data || data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        if (slug) {
+            fetchDestination();
+        }
+    }, [slug]);
+
+    if (isLoading) {
+        return (
+            <Container className="py-5 d-flex flex-column justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
+                <Spinner animation="border" variant="primary" style={{ width: "3rem", height: "3rem" }} />
+                <p className="mt-3 text-muted fw-medium">Préparation du voyage...</p>
+            </Container>
+        );
+    }
+
+    if (error || !destination || Object.keys(destination).length === 0) {
         return (
             <Container className="py-5 d-flex justify-content-center align-items-center" style={{ minHeight: "60vh" }}>
                 <Card className="text-center border-0 shadow-lg rounded-4 p-4 p-md-5" style={{ maxWidth: "600px" }}>
@@ -27,52 +61,46 @@ function DestinationDetailPage() {
             </Container>
         );
     }
-
-    const latitude = destination.latitude || "46.2276";  
-    const longitude = destination.longitude || "2.2137"; 
-
-    const mapUrl = (destination.latitude && destination.longitude)
-        ? `https://maps.google.com/maps?q=${latitude},${longitude}&z=5&output=embed`
-        : `https://maps.google.com/maps?q=${encodeURIComponent(destination.name)}&z=5&output=embed`;
+    const latitude = destination.lat || "46.2276";  
+    const longitude = destination.long || "2.2137"; 
+    const mapUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&z=5&output=embed`;
 
     return (
         <Container className="py-5">
             <Button as={Link} to="/destination" variant="outline-secondary" className="mb-4 rounded-pill px-4">
-                &larr; Retour aux destinations
+                ← Retour aux destinations
             </Button>
             
             <Row className="align-items-center mb-5">
                 <Col lg={6} className="mb-4 mb-lg-0">
-                    <img 
-                        src={destination.image} 
-                        alt={destination.name} 
-                        className="img-fluid rounded-4 shadow-lg w-100"
-                        style={{ objectFit: "cover", maxHeight: "500px" }}
-                    />
+                    <div className="position-relative">
+                        <img 
+                            src={destination.image} 
+                            alt={destination.name} 
+                            className="img-fluid rounded-4 shadow-lg w-100"
+                            style={{ objectFit: "cover", maxHeight: "500px" }}
+                        />
+                        {/* 🆕 Ajout du bouton Favoris sur l'image */}
+                        <div className="position-absolute top-0 end-0 p-3">
+                            <FavoriteButton destination={{ ...destination, title: destination.name }} />
+                        </div>
+                    </div>
                 </Col>
                 
                 <Col lg={6} className="px-lg-5">
+                    {/* Si l'API renvoie le nom de la région, on l'affiche, sinon on affiche l'ID */}
                     <Badge 
-                        as={Link}
-                        to={`/region/${destination.regionSlug}`}
                         bg="info" 
                         className="text-uppercase tracking-wider mb-2 py-2 px-3 rounded-pill text-white text-decoration-none"
                     >
-                        {destination.region}
+                        {destination.region_name}
                     </Badge>
                     <h1 className="display-4 fw-bold mb-2">{destination.name}</h1>
                     <h4 className="text-muted mb-4">📍 Capitale : {destination.capital}</h4>
                     
-                    <p className="fs-5 text-secondary mb-4">
+                    <p className="fs-5 text-secondary mb-4" style={{ whiteSpace: "pre-line" }}>
                         {destination.description}
                     </p>
-
-                    <div className="d-flex flex-wrap gap-2 mb-4">
-                        <Badge bg="light" text="dark" className="border py-2 px-3 rounded-pill">🗣️ {destination.language}</Badge>
-                        <Badge bg="light" text="dark" className="border py-2 px-3 rounded-pill">💱 {destination.currency}</Badge>
-                        <Badge bg="light" text="dark" className="border py-2 px-3 rounded-pill">💰 Budget : {destination.budget}</Badge>
-                        <Badge bg="light" text="dark" className="border py-2 px-3 rounded-pill">🕒 {destination.timezone}</Badge>
-                    </div>
 
                     <Button variant="primary" size="lg" className="rounded-pill px-5 shadow-sm fw-bold">
                         Réserver ce voyage
@@ -82,39 +110,6 @@ function DestinationDetailPage() {
 
             <hr />
             
-            <div className="mt-5 mb-5 pt-4">
-                <h3 className="fw-bold mb-4">Informations pratiques</h3>
-                <Row className="g-4">
-                    <Col md={4}>
-                        <Card className="h-100 border-0 shadow-sm bg-light rounded-4">
-                            <Card.Body className="p-4">
-                                <h5 className="fw-bold mb-3">☀️ Climat</h5>
-                                <Card.Text className="text-muted">{destination.climate}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                    
-                    <Col md={4}>
-                        <Card className="h-100 border-0 shadow-sm bg-light rounded-4">
-                            <Card.Body className="p-4">
-                                <h5 className="fw-bold mb-3">📅 Meilleure saison</h5>
-                                <Card.Text className="text-muted">{destination.bestSeason}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col md={4}>
-                        <Card className="h-100 border-0 shadow-sm bg-light rounded-4">
-                            <Card.Body className="p-4">
-                                <h5 className="fw-bold mb-3">🛂 Formalités (Visa)</h5>
-                                <Card.Text className="text-muted">{destination.visa}</Card.Text>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>
-
-            <hr />
             <div className="mt-5">
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <h3 className="fw-bold mb-0">🌍 Situation Géographique</h3>

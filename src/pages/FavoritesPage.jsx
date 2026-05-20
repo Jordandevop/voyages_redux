@@ -6,27 +6,27 @@ import { fetchFavorites, removeFavorite } from "../features/favorites/favoriteSl
 
 function FavoritesPage() {
     const dispatch = useDispatch();
-    
-    // Récupération des données depuis le store Redux
+
     const { favorites, status, error } = useSelector((state) => state.favorites);
     const { user } = useSelector((state) => state.auth);
 
     useEffect(() => {
-        // On charge les favoris uniquement si l'utilisateur est connecté
-        if (user) {
-            dispatch(fetchFavorites());
+        if (user && user.id) {
+            dispatch(fetchFavorites(user.id));
         }
     }, [dispatch, user]);
 
     const handleRemove = async (destinationId) => {
         try {
-            await dispatch(removeFavorite({ destination_id: destinationId })).unwrap();
+            await dispatch(removeFavorite({ 
+                destination_id: destinationId,
+                user_id: user.id
+            })).unwrap();
         } catch (err) {
             console.error("Impossible de retirer le favori :", err);
         }
     };
 
-    // Sécurité de production : Redirection ou message si non connecté
     if (!user) {
         return (
             <Container className="py-5 text-center min-vh-100 d-flex flex-column justify-content-center align-items-center">
@@ -50,11 +50,10 @@ function FavoritesPage() {
                         <h1 className="display-5 fw-bold text-dark mb-0">Mes Favoris ❤️</h1>
                     </div>
                     <div className="text-muted fw-medium">
-                        {favorites.length} {favorites.length > 1 ? 'destinations sauvées' : 'destination sauvée'}
+                        {favorites?.length || 0} {(favorites?.length || 0) > 1 ? 'destinations sauvées' : 'destination sauvée'}
                     </div>
                 </div>
 
-                {/* Gestion des erreurs API */}
                 {error && (
                     <Alert variant="danger" className="rounded-3 shadow-sm mb-4">
                         <Alert.Heading className="fs-6 fw-bold">Erreur de chargement</Alert.Heading>
@@ -62,14 +61,12 @@ function FavoritesPage() {
                     </Alert>
                 )}
 
-                {/* État de chargement initial */}
-                {status === 'pending' && favorites.length === 0 ? (
+                {status === 'pending' && (!favorites || favorites.length === 0) ? (
                     <div className="text-center py-5">
                         <Spinner animation="grow" variant="primary" />
                         <p className="mt-3 text-muted fw-medium">Chargement de vos coups de cœur...</p>
                     </div>
-                ) : favorites.length === 0 ? (
-        
+                ) : !favorites || favorites.length === 0 ? (
                     <Card className="border-0 shadow-sm rounded-4 text-center py-5">
                         <Card.Body className="py-5">
                             <div className="fs-1 mb-3 opacity-50">🧳</div>
@@ -84,7 +81,6 @@ function FavoritesPage() {
                         </Card.Body>
                     </Card>
                 ) : (
-                    /* Affichage de la grille des favoris */
                     <Row xs={1} md={2} lg={3} className="g-4">
                         {favorites.map((fav) => (
                             <Col key={fav.destination_id}>

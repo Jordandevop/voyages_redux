@@ -1,105 +1,88 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { apiRequest } from "../../api/apiClient"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { apiRequest } from "../../api/apiClient";
 
-const initialState ={
+const initialState = {
     favorites: [],
     status: 'waiting',
     error: null,
-}
+};
 
 export const fetchFavorites = createAsyncThunk(
-    'favorite/fetchFavorites',
-    async (_, { rejectWithValue }) => {
+    'favorites/fetchFavorites',
+    async (userId, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorites/index.php', {
+            const response = await apiRequest(`/favorites/index.php?user_id=${userId}`, {
                 method: 'GET',
-            })
+            });
+            return response;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const addFavorite = createAsyncThunk(
-    'favorite/addFavorite',
-    async (destinationId, { rejectWithValue }) => {
+    'favorites/addFavorite',
+    async (favoriteData, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorites/store.php', {
+            const response = await apiRequest('/favorites/store.php', {
                 method: 'POST',
-                body: JSON.stringify({ destination_id: destinationId }),
-            })
+                body: JSON.stringify(favoriteData),
+            });
+            return response.favorite || favoriteData; 
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.message);
         }
     }
 );
 
 export const removeFavorite = createAsyncThunk(
-    'favorite/removeFavorite',
-    async (destinationId, { rejectWithValue }) => {
+    'favorites/removeFavorite',
+    async (payload, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorites/delete.php', {
+            await apiRequest('/favorites/delete.php', {
                 method: 'POST',
-                body: JSON.stringify({ destination_id: destinationId }),
-             })
+                body: JSON.stringify(payload),
+            });
+            return payload.destination_id;
         } catch (error) {
-            return rejectWithValue(error.message)
+            return rejectWithValue(error.message);
         }
     }
 );
 
 const favoriteSlice = createSlice({
-    name: 'favorite',
+    name: 'favorites',
     initialState,
     reducers: {
-        resetFavoriteStatus: (state) => {
+        clearFavorites: (state) => {
+            state.favorites = [];
             state.status = 'waiting';
-            state.error = null;
-        },
+        }
     },
     extraReducers: (builder) => {
         builder
             .addCase(fetchFavorites.pending, (state) => {
-                state.status = 'pending'
-                state.error = null
+                state.status = 'pending';
             })
             .addCase(fetchFavorites.fulfilled, (state, action) => {
-                state.status = 'success'
-                state.favorites = action.payload || []
+                state.status = 'success';
+                state.favorites = Array.isArray(action.payload) ? action.payload : action.payload.favorites || [];
             })
             .addCase(fetchFavorites.rejected, (state, action) => {
-                state.status = 'error'
-                state.error = action.payload
-            })
-
-            .addCase(addFavorite.pending, (state) => {
-                state.status = 'pending'
-                state.error = null
+                state.status = 'error';
+                state.error = action.payload;
             })
             .addCase(addFavorite.fulfilled, (state, action) => {
-                state.status = 'success'
-                state.favorites.push(action.payload)
-            })
-            .addCase(addFavorite.rejected, (state, action) => {
-                state.status = 'error'
-                state.error = action.payload
-            })
-
-            .addCase(removeFavorite.pending, (state) => {
-                state.status = 'pending'
-                state.error = null
+                state.favorites.push(action.payload);
             })
             .addCase(removeFavorite.fulfilled, (state, action) => {
-                state.status = 'success'
-                state.favorites = state.favorites.filter(dest => dest.id !== action.payload.id)
-            })
-            .addCase(removeFavorite.rejected, (state, action) => {
-                state.status = 'error'
-                state.error = action.payload
-            })
-    },
-})
+                state.favorites = state.favorites.filter(
+                    (fav) => String(fav.destination_id) !== String(action.payload)
+                );
+            });
+    }
+});
 
-export const { resetFavoriteStatus } = favoriteSlice.actions
-
-export default favoriteSlice.reducer
+export const { clearFavorites } = favoriteSlice.actions;
+export default favoriteSlice.reducer;

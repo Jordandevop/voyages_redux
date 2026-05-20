@@ -3,11 +3,10 @@
 // Avant : main.jsx => App.jsx => components/pages
 // Sur ce projet : main.jsx => RouterProvider => Router.jsx => Layjout/Pages.jsx
 
-
 import { createBrowserRouter } from "react-router-dom";
 // permet de créer un router moderne sur les urls du navigateur
-import MainLayout from "../layouts/MainLayout"
-import HomePage from "../pages/HomePage"
+import MainLayout from "../layouts/MainLayout";
+import HomePage from "../pages/HomePage";
 import AboutPage from "../pages/AboutPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import DestinationPage from "../pages/DestinationsPage";
@@ -22,83 +21,91 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import AdminRoute from "../components/AdminRoute";
 import DashboardPage from "../pages/DashboardPage";
 import FavoritesPage from "../pages/FavoritesPage";
+import AddDestinationPage from "../pages/AddDestinationPage";
 
 const router = createBrowserRouter([
-
-    {
-        path:"/",
-        element: <MainLayout/>,
-        // toutes les pages utilisent MainLayout
-        errorElement: <NotFoundPage/>,
-        children: [
-            {
-                index: true,
-                // cette page est la page par défaut
-                // index : true = path: ""( deuxieme écriture possible)
-                element: <HomePage/>
-            },
-            {
-                path: "about",
-                element: <AboutPage/>
-            },
-            {
-                path: "destination",
-                element: <DestinationPage/>
-            },
-            {
-                path:"destination/:slug",
-                element: <DestinationDetailPage/>
-            },
-            {
-                path: "search",
-                element: <SearchPage/>
-            },{
-                path:"contact",
-                element: <ContactPage/>
-            },
-            {
-                path:"region/:regionName",
-                element: <RegionPage/>
-            },
-            {
-                path: "register",
-                element: <RegisterPage/>
-            },
-            {
-                path: "login",
-                element: <LoginPage/>
-            },
-            {
-                path: "profile",
-                element: (
-                        <ProtectedRoute>
-                            <ProfilePage/>
-                        </ProtectedRoute>
-                ),
-            },
-            {
-                path: "dashboard",
-                element: (
-                    <AdminRoute>
-                        <DashboardPage/>
-                    </AdminRoute>
-                )
-            },
-            {
-                path: "favorites",
-                element: (
-                    <ProtectedRoute>
-                        <FavoritesPage/>
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: "*",
-                element: <NotFoundPage/>
-            }
-        ]
-    }
-
+  {
+    path: "/",
+    element: <MainLayout />,
+    // toutes les pages utilisent MainLayout
+    errorElement: <NotFoundPage />,
+    children: [
+      {
+        index: true,
+        // cette page est la page par défaut
+        // index : true = path: ""( deuxieme écriture possible)
+        element: <HomePage />,
+      },
+      {
+        path: "about",
+        element: <AboutPage />,
+      },
+      {
+        path: "destination",
+        element: <DestinationPage />,
+      },
+      {
+        path: "destination/:slug",
+        element: <DestinationDetailPage />,
+      },
+      {
+        path: "search",
+        element: <SearchPage />,
+      },
+      {
+        path: "contact",
+        element: <ContactPage />,
+      },
+      {
+        path: "region/:regionName",
+        element: <RegionPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard",
+        element: (
+          <AdminRoute>
+            <DashboardPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "favorites",
+        element: (
+          <ProtectedRoute>
+            <FavoritesPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "dashboard/add-destination",
+        element: (
+          <AdminRoute>
+            <AddDestinationPage />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
+      },
+    ],
+  },
 ]);
 
 export default router;

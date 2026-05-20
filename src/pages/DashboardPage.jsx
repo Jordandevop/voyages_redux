@@ -3,6 +3,7 @@ import { Container, Row, Col, Card, Table, Badge, Spinner, Alert, Tabs, Tab, But
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContacts } from "../features/contact/contactSlice";
 import { apiRequest } from "../api/apiClient";
+import { Link } from "react-router-dom"; 
 
 function DashboardPage() {
   const dispatch = useDispatch();
@@ -42,16 +43,30 @@ function DashboardPage() {
             <h1 className="fw-bold text-dark mb-1">Espace Administration</h1>
             <p className="text-muted mb-0">Gérez les membres et consultez les demandes de contact.</p>
           </div>
-          <Button 
-            variant="white" 
-            className="border shadow-sm rounded-pill px-4 fw-bold"
-            onClick={() => {
-                dispatch(fetchContacts());
-            }}
-          >
-            🔄 Actualiser
-          </Button>
+          
+          {/* 🆕 Nouveau bloc pour regrouper les boutons d'action */}
+          <div className="d-flex gap-2">
+            <Button 
+              as={Link} 
+              to="/dashboard/add-destination" 
+              variant="primary" 
+              className="shadow-sm rounded-pill px-4 fw-bold"
+            >
+              ➕ Ajouter une destination
+            </Button>
+            
+            <Button 
+              variant="white" 
+              className="border shadow-sm rounded-pill px-4 fw-bold"
+              onClick={() => {
+                  dispatch(fetchContacts());
+              }}
+            >
+              🔄 Actualiser
+            </Button>
+          </div>
         </div>
+        
         {(usersError || contactError) && (
           <Alert variant="danger" className="border-0 shadow-sm rounded-4 mb-4">
             <Alert.Heading className="fs-6 fw-bold">Erreur de synchronisation</Alert.Heading>
