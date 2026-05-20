@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, rejectedWithValue } from "@reduxjs/toolkit"
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 
 import { apiRequest } from "../../api/apiClient"
 
@@ -29,7 +29,7 @@ export const loginUser = createAsyncThunk(
     // fonction nous permettant de faire la connexion
     // RejectedWithValue : fonction fournie par createAsyncThunk
     // permet de retourner une erreur personnalisée : le message de notre API
-    async (userInfos, { rejectedWithValue }) => {
+    async (userInfos, { rejectWithValue }) => {
         try {
             return await apiRequest('/auth/login.php', {
                 // Méthode POST
@@ -38,21 +38,21 @@ export const loginUser = createAsyncThunk(
                 body: JSON.stringify(userInfos),
             })
         } catch(error) {
-            return rejectedWithValue(error.message)
+            return rejectWithValue(error.message)
         }
     }
 );
 
 export const registerUSer = createAsyncThunk(
     'auth/registerUSer',
-    async (userInfos, {rejectedWithValue}) => {
+    async (userInfos, {rejectWithValue}) => {
         try {
             return await apiRequest('/auth/register.php', {
                 method: 'POST',
                 body: JSON.stringify(userInfos),
             })
         } catch (error) {
-            return rejectedWithValue(error.message)
+            return rejectWithValue(error.message)
         }
     }
 )
@@ -106,13 +106,13 @@ const authSlice = createSlice({
 
                 state.user = action.payload
 
-                state.token= AccordionItem.paylon.accessToken
+                state.token = action.payload.accessToken
 
                 localStorage.setItem('user', JSON.stringify(action.payload))
                 localStorage.setItem('token', action.payload.accessToken)
             })
 
-            .addCase(registerUSer.rejected, (state)=>{
+            .addCase(registerUSer.rejected, (state, action)=>{
                  state.status = 'error'
 
                 state.error = action.payload

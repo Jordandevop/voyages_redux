@@ -2,9 +2,10 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container, Card, Form, Button, Row, Col, Alert } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch, useSelector} from "react-redux";
+import { loginUser } from "../features/auth/authSlice";
 
 const loginSchema = yup.object({
   username: yup.string().required("Le nom d'utilisateur est requis"),
@@ -12,10 +13,13 @@ const loginSchema = yup.object({
 });
 
 function LoginPage() {
-  const { login } = useAuth();
+  
   const navigate = useNavigate();
   const [apiError, setApiError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const dispatch = useDispatch();
+  const { status, error} = useSelector((state)=> state.auth)
 
   const {
     register,
@@ -30,27 +34,17 @@ function LoginPage() {
   });
 
   const onSubmit = async (data) => {
-    setApiError("");
+    
     try {
-      const response = await fetch("https://dummyjson.com/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username: data.username,
-          password: data.password,
-        }),
-      });
-      if (!response.ok) {
-        throw new Error("Identifiants incorrects");
-      }
-      const result = await response.json();
-      console.log(result);
-      login(result, result.accessToken);
+      await dispatch(loginUser(data)).unwrap()
+      //unwrap est une méthode de Redux Toolkit
+      // Succès : retourne les données (payload)
+      // echec: throw error
+
+    
       navigate("/profile");
     } catch (error) {
-      setApiError(error.message);
+      console.log(error.message);
     }
   };
 
@@ -64,9 +58,9 @@ function LoginPage() {
           <Card.Body>
             <h2 className="fw-bold text-center mb-4">Connexion</h2>
 
-            {apiError && (
+            {error && (
               <Alert variant="danger" className="text-center rounded-3">
-                {apiError}
+                {error}
               </Alert>
             )}
 

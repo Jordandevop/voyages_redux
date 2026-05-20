@@ -1,37 +1,37 @@
 import { Container, Card, Row, Col, Button, Image, Badge, Spinner, Alert } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { logout } from "../features/auth/authSlice";
+import { apiRequest } from "../api/apiClient";
 
 function ProfilePage() {
-  const { user, token, logout } = useAuth();
-  const [fullProfile, setFullProfile] = useState(null);
+ const { user,token } = useSelector((state) => state.auth);
+const [fullProfile, setFullProfile] = useState(null);
+const dispatch = useDispatch();
 
+const handleLogout = ()=>{
+  dispatch(logout());
+}
 
-  useEffect(() => {
+ useEffect(() => {
     if (!token) return;
 
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch('https://dummyjson.com/auth/me', {
+        const data = await apiRequest('/auth/me.php', {
           method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`, 
-          },
         });
 
-        if (!response.ok) {
-          throw new Error("Erreur de sécurité : Impossible de récupérer vos données.");
-        }
-
-        const data = await response.json();
         setFullProfile(data);
       } catch (error) {
-       
+        console.error("Impossible de charger le profil :", error.message);
       } 
     };
 
     fetchUserProfile();
-  }, [token]); 
+  }, [token]);
 
   return (
     <Container className="py-5">
@@ -77,7 +77,7 @@ function ProfilePage() {
                   <Button
                     variant="outline-danger"
                     className="rounded-pill fw-bold"
-                    onClick={logout}
+                    onClick={handleLogout}
                   >
                     Déconnexion
                   </Button>

@@ -3,6 +3,8 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUSer } from "../features/auth/authSlice";
 
 const registerSchema = yup.object({
   username: yup
@@ -55,10 +57,18 @@ function RegisterPage() {
   });
 
   const navigate = useNavigate()
+  const dispatch = useDispatch();
+  const { status, error } = useSelector((state) => state.auth);
 
-  const onSubmit = (data) => {
-    localStorage.setItem("connectedUser", JSON.stringify(data));
-    navigate("/profile");
+  const onSubmit = async (data) => {
+    try {
+   
+      await dispatch(registerUSer(data)).unwrap();
+      
+      navigate("/login");
+    } catch (err) {
+      console.error("Erreur d'inscription :", err);
+    }
   };
 
   return (

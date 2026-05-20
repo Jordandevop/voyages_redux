@@ -1,4 +1,17 @@
 // URL de base de l'api
+/*
+ENDPOINT de l'api :
+-------------------
+    POST    /auth/register.php
+    POST    /auth/login.php
+    GET     /auth/me.php
+    POST    /contact/store.php
+    GET     /contact/index.php
+    GET     /users/index.php
+    GET     /favorites/index.php
+    POST    /favorites/store.php
+    POST    /favorites/delete.php
+*/
 const API_URL = "https://qyklv804.webmo.me/api"
 
 export async function apiRequest(endpoint, options = {}) {
