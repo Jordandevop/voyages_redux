@@ -5,7 +5,7 @@ import { useAuth } from "../context/AuthContext";
 function Navbar() {
 
     const { isAuthenticated, user } = useAuth(); 
-
+    
     return (
         <BootstapNavbar 
             bg="primary"
