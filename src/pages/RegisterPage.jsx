@@ -1,7 +1,16 @@
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
+import {
+  Container,
+  Card,
+  Form,
+  Button,
+  Row,
+  Col,
+  Alert,
+  Spinner,
+} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUSer } from "../features/auth/authSlice";
@@ -40,8 +49,7 @@ const registerSchema = yup.object({
 });
 
 function RegisterPage() {
-
-    const [showPassword, setShowPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -59,19 +67,36 @@ function RegisterPage() {
     },
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { status, error } = useSelector((state) => state.auth);
 
   const onSubmit = async (data) => {
     try {
-   
       await dispatch(registerUSer(data)).unwrap();
-      
+
       navigate("/login");
     } catch (err) {
       console.error("Erreur d'inscription :", err);
     }
+  };
+
+const getErrorMessage = () => {
+    if (!error) return null;
+    const lowerError = error.toLowerCase();
+
+    if (lowerError.includes("username") || lowerError.includes("pseudo")) {
+      return "Ce pseudo est déjà utilisé. Veuillez en choisir un autre.";
+    }
+    
+    if (lowerError.includes("email") || lowerError.includes("mail")) {
+      return "Cette adresse email est déjà utilisée. Veuillez vous connecter ou en choisir une autre.";
+    }
+    
+    if (lowerError.includes("duplicate") || lowerError.includes("déjà")) {
+      return "Ces identifiants (email ou pseudo) sont déjà utilisés.";
+    }
+    return error; 
   };
 
   return (
@@ -82,6 +107,11 @@ function RegisterPage() {
       >
         <Card.Body>
           <h2 className="fw-bold text-center mb-4">Créer un compte</h2>
+          {error && (
+            <Alert variant="danger" className="text-center rounded-3 shadow-sm">
+              <span className="fw-medium">{getErrorMessage()}</span>
+            </Alert>
+          )}
 
           <Form onSubmit={handleSubmit(onSubmit)}>
             <Row className="g-3 align-items-end">
@@ -120,32 +150,32 @@ function RegisterPage() {
                 </Form.Group>
               </Col>
               <Col md={12}>
-                  <Form.Group controlId="password">
-                    <Form.Label className="fw-semibold text-secondary">
-                      Mot de passe
-                    </Form.Label>
-                    <div className="position-relative">
-                      <Form.Control
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Ex: 123password/"
-                        className="py-2.5 password-input"
-                        isInvalid={!!errors.password}
-                        {...register("password")}
-                      />
-                      <span
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="text-muted password-icon"
-                      >
-                        {showPassword ? "🙉" : "🙈"}
-                      </span>
+                <Form.Group controlId="password">
+                  <Form.Label className="fw-semibold text-secondary">
+                    Mot de passe
+                  </Form.Label>
+                  <div className="position-relative">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Ex: 123password/"
+                      className="py-2.5 password-input"
+                      isInvalid={!!errors.password}
+                      {...register("password")}
+                    />
+                    <span
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="text-muted password-icon"
+                    >
+                      {showPassword ? "🙉" : "🙈"}
+                    </span>
+                  </div>
+                  {errors.password && (
+                    <div className="invalid-feedback d-block fw-bold mt-1">
+                      {errors.password.message}
                     </div>
-                    {errors.password && (
-                      <div className="invalid-feedback d-block fw-bold mt-1">
-                        {errors.password.message}
-                      </div>
-                    )}
-                  </Form.Group>
-                </Col>
+                  )}
+                </Form.Group>
+              </Col>
               <Col md={6}>
                 <Form.Group controlId="firstName">
                   <Form.Label className="fw-semibold text-secondary">
@@ -187,20 +217,16 @@ function RegisterPage() {
                   </Form.Label>
                   <Form.Select className="py-2.5" {...register("gender")}>
                     <option value="">Genre</option>
-                    <option value="male">
-                      Homme
-                    </option>
+                    <option value="male">Homme</option>
                     <option value="female">Femme</option>
-                    <option value="none">
-                      Non défini
-                    </option>
+                    <option value="none">Non défini</option>
                   </Form.Select>
                   <Form.Control.Feedback type="invalid" className="fw-bold">
                     {errors.gender?.message}
                   </Form.Control.Feedback>
                 </Form.Group>
               </Col>
-                <Col md={6}>
+              <Col md={6}>
                 <Form.Group controlId="avatar">
                   <Form.Label className="fw-semibold text-secondary">
                     Avatar
@@ -221,9 +247,17 @@ function RegisterPage() {
             <Button
               type="submit"
               variant="primary"
-              className="w-100 mt-4 rounded-pill fw-bold"
+              className="w-100 mt-4 rounded-pill fw-bold py-2"
+              disabled={status === "pending"}
             >
-              S'inscrire
+              {status === "pending" ? (
+                <>
+                  <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+                  Création en cours...
+                </>
+              ) : (
+                "S'inscrire"
+              )}
             </Button>
           </Form>
 

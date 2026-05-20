@@ -33,3 +33,48 @@ body {
   transform: translateY(-50%);
   z-index: 10;
 }
+
+/* Dashboard */
+
+.custom-tabs .nav-link {
+  border: none !important;
+  color: #6c757d;
+  font-weight: 600;
+  padding: 1rem 1.5rem;
+  position: relative;
+}
+
+.custom-tabs .nav-link.active {
+  color: #0d6efd !important;
+  background: transparent !important;
+}
+
+.custom-tabs .nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 1.5rem;
+  right: 1.5rem;
+  height: 3px;
+  background: #0d6efd;
+  border-radius: 3px 3px 0 0;
+}
+
+.custom-table thead th {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  font-weight: 700;
+  color: #adb5bd;
+  border-top: none;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.custom-table tbody tr {
+  transition: all 0.2s;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #f8f9fa !important;
+}

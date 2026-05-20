@@ -1,195 +1,193 @@
 import { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Table, Badge, Spinner, Alert, Tabs, Tab, Button } from "react-bootstrap";
+import { Container, Row, Col, Card, Table, Badge, Spinner, Alert, Tabs, Tab, Button, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContacts } from "../features/contact/contactSlice";
-import { apiRequest } from "../api/apiClient"; 
+import { apiRequest } from "../api/apiClient";
 
 function DashboardPage() {
   const dispatch = useDispatch();
-  
   const { contacts, status: contactStatus, error: contactError } = useSelector((state) => state.contact);
-
-
   const [users, setUsers] = useState([]);
   const [isUsersLoading, setIsUsersLoading] = useState(true);
   const [usersError, setUsersError] = useState(null);
 
   useEffect(() => {
-
     dispatch(fetchContacts());
-
     const loadUsers = async () => {
       try {
         const usersData = await apiRequest('/users/index.php', { method: 'GET' });
         setUsers(usersData || []);
       } catch (err) {
-        setUsersError("Impossible de charger les utilisateurs : " + err.message);
+        setUsersError(err.message);
       } finally {
         setIsUsersLoading(false);
       }
     };
-
     loadUsers();
   }, [dispatch]);
 
   if (isUsersLoading || contactStatus === 'pending') {
     return (
       <Container className="py-5 text-center min-vh-100 d-flex justify-content-center align-items-center">
-        <Spinner animation="border" variant="primary" />
+        <Spinner animation="grow" variant="primary" />
       </Container>
     );
   }
 
   return (
-    <Container className="py-5 min-vh-100">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2 className="fw-bold">⚙️ Dashboard Administrateur</h2>
-      </div>
-
-      {(usersError || contactError) && (
-        <Alert variant="danger" className="rounded-4 shadow-sm">
-          {usersError && <div>{usersError}</div>}
-          {contactError && <div>Erreur Contacts : {contactError}</div>}
-        </Alert>
-      )}
-
-      <Row className="g-4 mb-5">
-        <Col md={6}>
-          <Card className="border-0 shadow-sm rounded-4 bg-primary text-white h-100">
-            <Card.Body className="p-4 d-flex align-items-center justify-content-between">
-              <div>
-                <h6 className="opacity-75 fw-bold mb-1 text-uppercase tracking-wider">Total Utilisateurs</h6>
-                <h2 className="display-5 fw-bold mb-0">{users.length}</h2>
-              </div>
-              <div className="fs-1 opacity-50">👥</div>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col md={6}>
-          <Card className="border-0 shadow-sm rounded-4 bg-dark text-white h-100">
-            <Card.Body className="p-4 d-flex align-items-center justify-content-between">
-              <div>
-                <h6 className="opacity-75 fw-bold mb-1 text-uppercase tracking-wider">Messages Reçus</h6>
-                <h2 className="display-5 fw-bold mb-0">{contacts.length}</h2>
-              </div>
-              <div className="fs-1 opacity-50">✉️</div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      <Card className="border-0 shadow-sm rounded-4 overflow-hidden">
-        <Card.Body className="p-0">
-          <Tabs
-            defaultActiveKey="contacts"
-            id="dashboard-tabs"
-            className="px-4 pt-4 border-bottom-0"
+    <section className="bg-light min-vh-100 py-4">
+      <Container>
+        <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-5 gap-3">
+          <div>
+            <h1 className="fw-bold text-dark mb-1">Espace Administration</h1>
+            <p className="text-muted mb-0">Gérez les membres et consultez les demandes de contact.</p>
+          </div>
+          <Button 
+            variant="white" 
+            className="border shadow-sm rounded-pill px-4 fw-bold"
+            onClick={() => {
+                dispatch(fetchContacts());
+            }}
           >
-            <Tab eventKey="contacts" title="✉️ Demandes de contact">
-              <div className="p-4">
-                <Table responsive hover className="align-middle mb-0">
-                  <thead className="table-light">
-                    <tr>
-                      <th>ID</th>
-                      <th>Client</th>
-                      <th>Sujet & Message</th>
-                      <th>Date</th>
-                      <th className="text-end">Statut</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {contacts.length > 0 ? (
-                      contacts.map((msg) => (
-                        <tr key={msg.id}>
-                          <td className="text-muted small">#{msg.id}</td>
-                          <td>
-                            <div className="fw-bold">{msg.name}</div>
-                            <div className="text-muted small">{msg.email}</div>
-                            {msg.user_id && (
-                              <Badge bg="info" className="mt-1" style={{ fontSize: "0.6rem" }}>
-                                Inscrit (ID: {msg.user_id})
-                              </Badge>
-                            )}
-                          </td>
-                          <td style={{ maxWidth: "300px" }}>
-                            <div className="fw-semibold text-truncate">{msg.subject}</div>
-                            <div className="text-muted small text-truncate">{msg.message}</div>
-                          </td>
-                          <td className="text-muted small">
-                            {msg.created_at ? new Date(msg.created_at).toLocaleDateString() : 'N/A'}
-                          </td>
-                          <td className="text-end">
-                            <Button variant="outline-primary" size="sm" className="rounded-pill px-3">
-                              Répondre
-                            </Button>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="text-center py-5 text-muted">
-                          Aucun message reçu pour le moment.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </Table>
-              </div>
-            </Tab>
+            🔄 Actualiser
+          </Button>
+        </div>
+        {(usersError || contactError) && (
+          <Alert variant="danger" className="border-0 shadow-sm rounded-4 mb-4">
+            <Alert.Heading className="fs-6 fw-bold">Erreur de synchronisation</Alert.Heading>
+            <p className="mb-0 small">{usersError || contactError}</p>
+          </Alert>
+        )}
 
-            {/* ONGLET 2 : UTILISATEURS INSCRITS */}
-            <Tab eventKey="users" title="👥 Utilisateurs">
-              <div className="p-4">
-                <Table responsive hover className="align-middle mb-0">
-                  <thead className="table-light">
-                    <tr>
-                      <th>ID</th>
-                      <th>Identité</th>
-                      <th>Contact</th>
-                      <th>Rôle</th>
-                      <th className="text-end">Inscription</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {users.length > 0 ? (
-                      users.map((user) => (
-                        <tr key={user.id}>
-                          <td className="text-muted small">#{user.id}</td>
-                          <td>
-                            <div className="fw-bold">{user.first_name || user.firstName} {user.last_name || user.lastName}</div>
-                            <div className="text-muted small">@{user.username}</div>
+        <Row className="g-4 mb-5">
+          <Col md={4}>
+            <Card className="border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+              <Card.Body className="p-4">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <div className="bg-primary bg-opacity-10 p-3 rounded-3 text-primary fs-4">👥</div>
+                  <Badge bg="success" className="rounded-pill bg-opacity-10 text-success border border-success">Actifs</Badge>
+                </div>
+                <h6 className="text-muted fw-semibold text-uppercase small mb-1">Membres inscrits</h6>
+                <h2 className="fw-bold mb-0">{users.length}</h2>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="border-0 shadow-sm rounded-4 h-100 overflow-hidden">
+              <Card.Body className="p-4">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <div className="bg-warning bg-opacity-10 p-3 rounded-3 text-warning fs-4">✉️</div>
+                  <Badge bg="warning" className="rounded-pill bg-opacity-10 text-warning border border-warning">Nouveau</Badge>
+                </div>
+                <h6 className="text-muted fw-semibold text-uppercase small mb-1">Messages reçus</h6>
+                <h2 className="fw-bold mb-0">{contacts.length}</h2>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col md={4}>
+            <Card className="border-0 shadow-sm rounded-4 h-100 overflow-hidden bg-dark text-white">
+              <Card.Body className="p-4">
+                <div className="d-flex justify-content-between align-items-start mb-3">
+                  <div className="bg-white bg-opacity-10 p-3 rounded-3 text-white fs-4">🛡️</div>
+                </div>
+                <h6 className="text-white text-opacity-50 fw-semibold text-uppercase small mb-1">Rôle Actuel</h6>
+                <h2 className="fw-bold mb-0">Administrateur</h2>
+              </Card.Body>
+            </Card>
+          </Col>
+        </Row>
+
+        <Card className="border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+          <Card.Body className="p-0">
+            <Tabs defaultActiveKey="contacts" className="custom-tabs px-4 pt-3 border-bottom">
+
+              <Tab eventKey="contacts" title={<span className="py-2 d-inline-block">📬 Messages</span>}>
+                <div className="p-0">
+                  <Table responsive hover className="align-middle mb-0 custom-table">
+                    <thead>
+                      <tr>
+                        <th className="ps-4">Expéditeur</th>
+                        <th>Sujet du message</th>
+                        <th>Date</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {contacts.map((msg) => (
+                        <tr key={msg.id}>
+                          <td className="ps-4 py-3">
+                            <div className="d-flex align-items-center gap-3">
+                              <div className="bg-light rounded-circle d-flex align-items-center justify-content-center fw-bold text-primary" style={{width: "40px", height: "40px"}}>
+                                {msg.name.charAt(0)}
+                              </div>
+                              <div>
+                                <div className="fw-bold text-dark">{msg.name}</div>
+                                <div className="text-muted small">{msg.email}</div>
+                              </div>
+                            </div>
                           </td>
-                          <td>{user.email}</td>
                           <td>
-                            <Badge 
-                              bg={user.role === 'admin' ? 'danger' : 'light'} 
-                              text={user.role === 'admin' ? 'light' : 'dark'}
-                              className="border px-3 py-2 rounded-pill text-uppercase"
-                              style={{ fontSize: "0.65rem" }}
-                            >
-                              {user.role || 'membre'}
+                            <div className="fw-semibold text-dark mb-1">{msg.subject}</div>
+                            <div className="text-muted small text-truncate" style={{maxWidth: "350px"}}>{msg.message}</div>
+                          </td>
+                          <td>
+                            <span className="text-muted small">{msg.created_at ? new Date(msg.created_at).toLocaleDateString() : '—'}</span>
+                          </td>
+                          
+                        </tr>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Tab>
+
+              <Tab eventKey="users" title={<span className="py-2 d-inline-block">👥 Utilisateurs</span>}>
+                <div className="p-0">
+                  <Table responsive hover className="align-middle mb-0 custom-table">
+                    <thead>
+                      <tr>
+                        <th className="ps-4">Utilisateur</th>
+                        <th>Email</th>
+                        <th>Rôle</th>
+                        <th className="text-end pe-4">Date Inscription</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {users.map((u) => (
+                        <tr key={u.id}>
+                          <td className="ps-4 py-3">
+                            <div className="d-flex align-items-center gap-3">
+                              <Image 
+                                src={u.avatar || u.image || `https://ui-avatars.com/api/?name=${u.username}&background=random`} 
+                                roundedCircle 
+                                style={{width: "40px", height: "40px", objectFit: "cover"}}
+                                className="border"
+                              />
+                              <div>
+                                <div className="fw-bold text-dark">{u.first_name || u.firstName} {u.last_name || u.lastName}</div>
+                                <div className="text-muted small">@{u.username}</div>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="text-muted">{u.email}</td>
+                          <td>
+                            <Badge bg={u.role === 'admin' ? 'dark' : 'white'} className={`rounded-pill border px-3 py-2 ${u.role === 'admin' ? '' : 'text-dark fw-medium'}`}>
+                              {u.role === 'admin' ? '🛡️ Administrateur' : '👤 Membre'}
                             </Badge>
                           </td>
-                          <td className="text-muted small text-end">
-                            {user.created_at ? new Date(user.created_at).toLocaleDateString() : 'N/A'}
+                          <td className="text-end pe-4 text-muted small">
+                            {u.created_at ? new Date(u.created_at).toLocaleDateString() : '—'}
                           </td>
                         </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan="5" className="text-center py-5 text-muted">
-                          Aucun utilisateur trouvé.
-                        </td>
-                      </tr>
-                    )}
-                  </tbody>
-                </Table>
-              </div>
-            </Tab>
-          </Tabs>
-        </Card.Body>
-      </Card>
-    </Container>
+                      ))}
+                    </tbody>
+                  </Table>
+                </div>
+              </Tab>
+            </Tabs>
+          </Card.Body>
+        </Card>
+      </Container>
+    </section>
   );
 }
 
