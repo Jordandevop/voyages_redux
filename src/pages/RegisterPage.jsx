@@ -5,6 +5,7 @@ import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUSer } from "../features/auth/authSlice";
+import { useState } from "react";
 
 const registerSchema = yup.object({
   username: yup
@@ -39,6 +40,8 @@ const registerSchema = yup.object({
 });
 
 function RegisterPage() {
+
+    const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -117,22 +120,32 @@ function RegisterPage() {
                 </Form.Group>
               </Col>
               <Col md={12}>
-                <Form.Group controlId="password">
-                  <Form.Label className="fw-semibold text-secondary">
-                    Mot de passe
-                  </Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Ex: 123password/"
-                    className="py-2.5"
-                    isInvalid={!!errors.password}
-                    {...register("password")}
-                  />
-                  <Form.Control.Feedback type="invalid" className="fw-bold">
-                    {errors.password?.message}
-                  </Form.Control.Feedback>
-                </Form.Group>
-              </Col>
+                  <Form.Group controlId="password">
+                    <Form.Label className="fw-semibold text-secondary">
+                      Mot de passe
+                    </Form.Label>
+                    <div className="position-relative">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Ex: 123password/"
+                        className="py-2.5 password-input"
+                        isInvalid={!!errors.password}
+                        {...register("password")}
+                      />
+                      <span
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="text-muted password-icon"
+                      >
+                        {showPassword ? "🙉" : "🙈"}
+                      </span>
+                    </div>
+                    {errors.password && (
+                      <div className="invalid-feedback d-block fw-bold mt-1">
+                        {errors.password.message}
+                      </div>
+                    )}
+                  </Form.Group>
+                </Col>
               <Col md={6}>
                 <Form.Group controlId="firstName">
                   <Form.Label className="fw-semibold text-secondary">

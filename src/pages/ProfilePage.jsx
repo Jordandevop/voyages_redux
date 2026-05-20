@@ -1,142 +1,96 @@
-import { Container, Card, Row, Col, Button, Image, Badge, Spinner, Alert } from "react-bootstrap";
-import { useAuth } from "../context/AuthContext";
+import { Container, Row, Col, Button, Image, Badge, Spinner } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { apiRequest } from "../api/apiClient";
 
 function ProfilePage() {
- const { user,token } = useSelector((state) => state.auth);
-const [fullProfile, setFullProfile] = useState(null);
-const dispatch = useDispatch();
+  const { token } = useSelector((state) => state.auth);
+  const [fullProfile, setFullProfile] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  const dispatch = useDispatch();
 
-const handleLogout = ()=>{
-  dispatch(logout());
-}
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
- useEffect(() => {
+  useEffect(() => {
     if (!token) return;
 
     const fetchUserProfile = async () => {
       try {
-        const data = await apiRequest('/auth/me.php', {
-          method: 'GET',
-        });
-
+        const data = await apiRequest('/auth/me.php', { method: 'GET' });
         setFullProfile(data);
       } catch (error) {
         console.error("Impossible de charger le profil :", error.message);
-      } 
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchUserProfile();
   }, [token]);
 
+  if (isLoading) {
+    return (
+      <Container className="py-5 text-center min-vh-100 d-flex justify-content-center align-items-center">
+        <Spinner animation="border" variant="dark" />
+      </Container>
+    );
+  }
+
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col md={10} lg={7}>
-          <Card className="border-0 shadow-lg rounded-4 overflow-hidden">
-            <Card.Body className="p-4 pt-0">
-              <Row className="align-items-end mb-4">
-                <Col xs="auto">
-                  <Image
-                    src={fullProfile?.image}
-                    roundedCircle
-                    className="border border-4 border-white shadow"
-                    style={{
-                      marginTop: '10px',
-                      width: "130px",
-                      height: "130px",
-                      backgroundColor: "white",
-                      objectFit: "cover",
-                    }}
-                  />
-                </Col>
-                <Col>
-                  <div className="mb-2">
-                    <h2 className="fw-bold d-inline-block me-2 mb-0">
-                      {fullProfile?.firstName} {fullProfile?.lastName}
-                    </h2>
-                    <Badge
-                      bg={fullProfile?.role === "admin" ? "danger" : "success"}
-                      className="rounded-pill px-3 py-2 align-middle shadow-sm"
-                      style={{
-                        fontSize: "0.7rem",
-                        letterSpacing: "1px",
-                        textTransform: "uppercase",
-                      }}
-                    >
-                      {fullProfile?.role}
-                    </Badge>
-                  </div>
-                  <p className="text-muted mb-0">@{fullProfile?.username}</p>
-                </Col>
-                <Col xs="auto" className="d-none d-md-block">
-                  <Button
-                    variant="outline-danger"
-                    className="rounded-pill fw-bold"
-                    onClick={handleLogout}
-                  >
-                    Déconnexion
-                  </Button>
-                </Col>
-              </Row>
+    <Container className="py-5" style={{ maxWidth: "600px" }}>
+      
+      {/* En-tête centré */}
+      <div className="d-flex flex-column align-items-center mb-5 text-center">
+        <Image
+          src={fullProfile?.image || "https://via.placeholder.com/150"}
+          roundedCircle
+          className="mb-3 shadow-sm border"
+          style={{ width: "120px", height: "120px", objectFit: "cover" }}
+        />
+        <h2 className="fw-bold mb-1">
+          {fullProfile?.firstName} {fullProfile?.lastName}
+        </h2>
+        <p className="text-muted mb-3">@{fullProfile?.username}</p>
+        <Badge bg={fullProfile?.role === "admin" ? "dark" : "light"} text={fullProfile?.role === "admin" ? "light" : "dark"} className="px-3 py-2 rounded-pill border">
+          {fullProfile?.role || "Membre"}
+        </Badge>
+      </div>
 
-              <Row className="g-4">
-                <Col md={6}>
-                  <div className="p-3 rounded-4 bg-light h-100 border border-light">
-                    <h6 className="text-primary fw-bold mb-3 border-bottom pb-2">
-                      📍 Coordonnées
-                    </h6>
-                    <div className="mb-2">
-                      <small className="text-muted d-block">Email</small>
-                      <span className="fw-semibold">{fullProfile?.email}</span>
-                    </div>
-                    <div className="mb-2">
-                      <small className="text-muted d-block">Téléphone</small>
-                      <span className="fw-semibold">{fullProfile?.phone}</span>
-                    </div>
-                  </div>
-                </Col>
+      {/* Bloc d'informations épuré */}
+      <div className="bg-white rounded-4 border p-4 shadow-sm mb-4">
+        <h5 className="fw-bold mb-4">Informations du compte</h5>
 
-                <Col md={6}>
-                  <div className="p-3 rounded-4 bg-light h-100 border border-light">
-                    <h6 className="text-primary fw-bold mb-3 border-bottom pb-2">
-                      👤 Informations
-                    </h6>
-                    <div className="mb-2">
-                      <small className="text-muted d-block">
-                        Âge / Anniversaire
-                      </small>
-                      <span className="fw-semibold">
-                        {fullProfile?.age} ans ({fullProfile?.birthDate})
-                      </span>
-                    </div>
-                    <div className="mb-2">
-                      <small className="text-muted d-block">Ville</small>
-                      <span className="fw-semibold">
-                        {fullProfile?.address?.city}, {fullProfile?.address?.stateCode}
-                      </span>
-                    </div>
-                  </div>
-                </Col>
-              </Row>
+        <Row className="mb-3 align-items-center">
+          <Col xs={5} sm={4} className="text-muted fw-medium">Email</Col>
+          <Col xs={7} sm={8} className="text-end text-sm-start text-break fw-semibold">
+            {fullProfile?.email}
+          </Col>
+        </Row>
+        
+        <hr className="text-muted opacity-25 my-3" />
 
-              <div className="d-grid d-md-none mt-4">
-                <Button
-                  variant="danger"
-                  className="rounded-pill fw-bold py-2"
-                  onClick={logout}
-                >
-                  Déconnexion
-                </Button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
+        <Row className="mb-3 align-items-center">
+          <Col xs={5} sm={4} className="text-muted fw-medium">Téléphone</Col>
+          <Col xs={7} sm={8} className="text-end text-sm-start fw-semibold">
+            {fullProfile?.phone || "Non renseigné"}
+          </Col>
+        </Row>
+
+      </div>
+
+      {/* Bouton d'action */}
+      <Button 
+        variant="outline-danger" 
+        className="w-100 rounded-pill py-2 fw-bold" 
+        onClick={handleLogout}
+      >
+        Se déconnecter
+      </Button>
+
     </Container>
   );
 }

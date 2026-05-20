@@ -43,28 +43,40 @@ function Navbar() {
             </Nav.Link>
 
             {user ? (
-              <Nav.Link
-                as={NavLink}
-                to="/profile"
-                className="fw-bold d-flex align-items-center gap-2"
-              >
-                {user?.image ? (
-                  <Image
-                    src={user.image}
-                    roundedCircle
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      objectFit: "cover",
-                      backgroundColor: "white",
-                    }}
-                    alt="Avatar"
-                  />
-                ) : (
-                  <span>👤</span>
+              <>
+                {user?.role === "admin" && (
+                  <Nav.Link 
+                    as={NavLink} 
+                    to="/dashboard" 
+                    className="fw-bold"
+                  >
+                    ⚙️ Dashboard
+                  </Nav.Link>
                 )}
-                Mon Profil
-              </Nav.Link>
+
+                <Nav.Link
+                  as={NavLink}
+                  to="/profile"
+                  className="fw-bold d-flex align-items-center gap-2"
+                >
+                  {user?.image ? (
+                    <Image
+                      src={user.image}
+                      roundedCircle
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        objectFit: "cover",
+                        backgroundColor: "white",
+                      }}
+                      alt="Avatar"
+                    />
+                  ) : (
+                    <span>👤</span>
+                  )}
+                  Mon Profil
+                </Nav.Link>
+              </>
             ) : (
               <>
                 <Nav.Link as={NavLink} to="/register">

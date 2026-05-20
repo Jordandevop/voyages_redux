@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react"; 
 import { Container, Row, Col, Card, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch, useSelector } from "react-redux";
+import { sendMessage, resetContactStatus } from "../features/contact/contactSlice";
 
 
 const contactSchema = yup.object({
@@ -25,11 +27,12 @@ const contactSchema = yup.object({
 }).required();
 
 function ContactPage() {
-    // États pour simuler l'envoi de données
-    const [isSending, setIsSending] = useState(false);
     const [showSuccess, setShowSuccess] = useState(false);
 
-   
+    const dispatch = useDispatch();
+    const {status, error} = useSelector((state)=> state.contact);
+    const {user} = useSelector((state)=> state.auth);
+
     const {
         register,
         handleSubmit,
@@ -38,26 +41,37 @@ function ContactPage() {
     } = useForm({
         resolver: yupResolver(contactSchema),
         defaultValues: {
-            name: "",
-            email: "",
+            name: user ? `${user.firstName} ${user.lastName}` : "",
+            email: user ? user.email : "",
             subject: "",
             message: ""
         }
     });
 
-    const onSubmit = (data) => {
-        setIsSending(true);
+    useEffect(() => {
+        return () => {
+            dispatch(resetContactStatus());
+        };
+    }, [dispatch]);
+    
+
+    const onSubmit = async (data) => {
         setShowSuccess(false);
+        dispatch(resetContactStatus()); 
 
-        // Simulation
-        setTimeout(() => {
-            setIsSending(false);
+        const payload = {
+            ...data,
+            user_id: user ? user.id : null
+        };
+
+        try {
+            await dispatch(sendMessage(payload)).unwrap();
             setShowSuccess(true);
-            console.log("Données du formulaire envoyées :", data);
             reset(); 
-        }, 2000);
+        } catch (err) {
+            console.error("Échec de l'envoi :", err);
+        }
     };
-
     return (
         <section className="bg-light min-vh-100 py-5">
             <Container>
@@ -114,6 +128,14 @@ function ContactPage() {
                                     </Alert>
                                 )}
 
+                             
+                                {error && (
+                                    <Alert variant="danger" dismissible onClick={() => dispatch(resetContactStatus())} className="rounded-3 border-0 shadow-sm">
+                                        <Alert.Heading className="fs-5 fw-bold">⚠️ Oups !</Alert.Heading>
+                                        <p className="mb-0 small">{error}</p>
+                                    </Alert>
+                                )}
+
                                 <Form onSubmit={handleSubmit(onSubmit)}>
                                     <Row className="g-3">
                                         
@@ -124,7 +146,7 @@ function ContactPage() {
                                                     type="text" 
                                                     placeholder="John Doe" 
                                                     isInvalid={!!errors.name}
-                                                    disabled={isSending}
+                                                    disabled={status === 'pending'} 
                                                     {...register("name")}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
@@ -133,7 +155,7 @@ function ContactPage() {
                                             </Form.Group>
                                         </Col>
 
-                                        {/* Email */}
+                                       
                                         <Col md={6}>
                                             <Form.Group controlId="contactEmail">
                                                 <Form.Label className="small fw-semibold text-muted">Adresse Email</Form.Label>
@@ -141,7 +163,7 @@ function ContactPage() {
                                                     type="email" 
                                                     placeholder="john.doe@example.com" 
                                                     isInvalid={!!errors.email}
-                                                    disabled={isSending}
+                                                    disabled={status === 'pending'} 
                                                     {...register("email")}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
@@ -150,7 +172,7 @@ function ContactPage() {
                                             </Form.Group>
                                         </Col>
 
-                                        {/* Objet */}
+                                      
                                         <Col md={12}>
                                             <Form.Group controlId="contactSubject">
                                                 <Form.Label className="small fw-semibold text-muted">Objet du message</Form.Label>
@@ -158,7 +180,7 @@ function ContactPage() {
                                                     type="text" 
                                                     placeholder="Ex: Demande de devis pour le Japon" 
                                                     isInvalid={!!errors.subject}
-                                                    disabled={isSending}
+                                                    disabled={status === 'pending'} 
                                                     {...register("subject")}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
@@ -167,7 +189,6 @@ function ContactPage() {
                                             </Form.Group>
                                         </Col>
 
-                                        {/* Message */}
                                         <Col md={12}>
                                             <Form.Group controlId="contactMessage">
                                                 <Form.Label className="small fw-semibold text-muted">Votre message</Form.Label>
@@ -176,7 +197,7 @@ function ContactPage() {
                                                     rows={5} 
                                                     placeholder="Racontez-nous votre projet de voyage en quelques lignes..." 
                                                     isInvalid={!!errors.message}
-                                                    disabled={isSending}
+                                                    disabled={status === 'pending'}
                                                     {...register("message")}
                                                 />
                                                 <Form.Control.Feedback type="invalid">
@@ -185,16 +206,15 @@ function ContactPage() {
                                             </Form.Group>
                                         </Col>
 
-                                        {/* Bouton de soumission avec Spinner dynamique */}
                                         <Col md={12} className="mt-4">
                                             <Button 
                                                 type="submit" 
                                                 variant="primary" 
                                                 size="lg" 
                                                 className="w-100 rounded-pill fw-bold py-2.5 shadow-sm"
-                                                disabled={isSending}
+                                                disabled={status === 'pending'} 
                                             >
-                                                {isSending ? (
+                                                {status === 'pending' ? ( 
                                                     <>
                                                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
                                                         Envoi en cours...

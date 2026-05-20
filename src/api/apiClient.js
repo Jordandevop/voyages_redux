@@ -10,7 +10,7 @@ ENDPOINT de l'api :
     GET     /users/index.php
     GET     /favorites/index.php
     POST    /favorites/store.php
-    POST    /favorites/delete.php
+    POST    /favorites/delete.php[]
 */
 const API_URL = "https://qyklv804.webmo.me/api"
 

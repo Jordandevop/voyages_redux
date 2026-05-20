@@ -12,7 +12,7 @@ function HomePage() {
                         <Col lg={6} className="order-2 order-lg-1">
                             <Card.Body className="p-4 p-md-5 mx-xl-3">
                                 <span className="text-primary fw-bold text-uppercase tracking-wider small d-block mb-2">
-                                    ✨ Inspiration de voyage
+                                     Inspiration de voyage
                                 </span>
                                 <h1 className="display-4 fw-black mb-3 text-dark lh-sm">
                                     Trouvez votre prochaine <br />

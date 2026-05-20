@@ -19,6 +19,8 @@ import RegisterPage from "../pages/RegisterPage";
 import LoginPage from "../pages/LoginPage";
 import ProfilePage from "../pages/ProfilePage";
 import ProtectedRoute from "../components/ProtectedRoute";
+import AdminRoute from "../components/AdminRoute";
+import DashboardPage from "../pages/DashboardPage";
 
 const router = createBrowserRouter([
 
@@ -72,6 +74,14 @@ const router = createBrowserRouter([
                             <ProfilePage/>
                         </ProtectedRoute>
                 ),
+            },
+            {
+                path: "dashboard",
+                element: (
+                    <AdminRoute>
+                        <DashboardPage/>
+                    </AdminRoute>
+                )
             },
             {
                 path: "*",
