@@ -1,4 +1,7 @@
 const getRegionColor = (region) => {
+    // Sécurité au cas où la région serait indéfinie
+    if (!region) return "secondary";
+
     const normalizedRegion = region.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     
     switch (normalizedRegion) {
@@ -8,14 +11,16 @@ const getRegionColor = (region) => {
             return "warning";   
         case "asie":
             return "danger";    
-        case "amerique":
+        case "amerique du nord":
+        case "amerique du sud":
             return "success";   
         case "oceanie":
-            return "info";      
+            return "info";    
+        case "antarctique":
+            return "dark";  
         default:
             return "secondary"; 
     }
 };
-
 
 export default getRegionColor;
