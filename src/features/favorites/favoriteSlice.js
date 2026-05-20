@@ -1,3 +1,6 @@
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
+import { apiRequest } from "../../api/apiClient"
+
 const initialState ={
     favorites: [],
     status: 'waiting',
@@ -8,7 +11,7 @@ export const fetchFavorites = createAsyncThunk(
     'favorite/fetchFavorites',
     async (_, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorite/index.php', {
+            return await apiRequest('/favorites/index.php', {
                 method: 'GET',
             })
         } catch (error) {
@@ -21,7 +24,7 @@ export const addFavorite = createAsyncThunk(
     'favorite/addFavorite',
     async (destinationId, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorite/store.php', {
+            return await apiRequest('/favorites/store.php', {
                 method: 'POST',
                 body: JSON.stringify({ destination_id: destinationId }),
             })
@@ -35,7 +38,7 @@ export const removeFavorite = createAsyncThunk(
     'favorite/removeFavorite',
     async (destinationId, { rejectWithValue }) => {
         try {
-            return await apiRequest('/favorite/delete.php', {
+            return await apiRequest('/favorites/delete.php', {
                 method: 'POST',
                 body: JSON.stringify({ destination_id: destinationId }),
              })

@@ -2,6 +2,7 @@ import { Container, Row, Col, Card, Button, Badge } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { destinations } from "../data/destinations"; 
 import getRegionColor from "../utils/helper";
+import FavoriteButton from "../components/FavoriteButton";
 
 function DestinationPage() {
     return (
@@ -21,14 +22,19 @@ function DestinationPage() {
                 {destinations.map((destination) => (
                     <Col key={destination.id}>
                         <Card className="h-100 border-0 shadow-sm rounded-4 overflow-hidden destination-card">
-                           
-                            <div style={{ height: "220px", overflow: "hidden" }}>
+                           <div className="position-relative" style={{ height: "220px", overflow: "hidden" }}>
                                 <Card.Img 
                                     variant="top" 
                                     src={destination.image} 
                                     alt={destination.name}
                                     style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                 />
+                                
+                                <div className="position-absolute top-0 end-0 p-3" style={{ zIndex: 10 }}>
+                                    <FavoriteButton 
+                                        destination={{ ...destination, title: destination.name }} 
+                                    />
+                                </div>
                             </div>
                             
                             <Card.Body className="d-flex flex-column p-4">

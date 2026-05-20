@@ -21,6 +21,7 @@ import ProfilePage from "../pages/ProfilePage";
 import ProtectedRoute from "../components/ProtectedRoute";
 import AdminRoute from "../components/AdminRoute";
 import DashboardPage from "../pages/DashboardPage";
+import FavoritesPage from "../pages/FavoritesPage";
 
 const router = createBrowserRouter([
 
@@ -81,6 +82,14 @@ const router = createBrowserRouter([
                     <AdminRoute>
                         <DashboardPage/>
                     </AdminRoute>
+                )
+            },
+            {
+                path: "favorites",
+                element: (
+                    <ProtectedRoute>
+                        <FavoritesPage/>
+                    </ProtectedRoute>
                 )
             },
             {

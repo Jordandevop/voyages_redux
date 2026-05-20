@@ -53,6 +53,13 @@ function Navbar() {
                     ⚙️ Dashboard
                   </Nav.Link>
                 )}
+                <Nav.Link 
+                  as={NavLink} 
+                  to="/favorites" 
+                  className="fw-bold d-flex align-items-center gap-1"
+                >
+                  ❤️ Favoris
+                </Nav.Link>
 
                 <Nav.Link
                   as={NavLink}
@@ -76,6 +83,7 @@ function Navbar() {
                   )}
                   Mon Profil
                 </Nav.Link>
+                
               </>
             ) : (
               <>
