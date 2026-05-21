@@ -13,6 +13,10 @@ export default function FavoriteButton({ destination }) {
   
   const [isLoading, setIsLoading] = useState(false);
 
+  if (!user) {
+    return null;
+  }
+
   const isFavorite = favorites.some(
     (fav) => Number(fav.destinationId || fav.destination_id) === Number(destination.id)
   );

@@ -118,6 +118,11 @@ function DestinationDetailPage() {
                 destination={{ ...destination, title: destination.name }}
               />
             </div>
+            <div className="position-absolute top-0 end-0 p-3">
+              <FavoriteButton
+                destination={{ ...destination, title: destination.name }}
+              />
+            </div>
           </div>
         </Col>
 
