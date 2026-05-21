@@ -76,8 +76,6 @@ function DashboardPage() {
       }
     }
   };
-  console.log("Mon ID Admin :", user?.id);
-  console.log("Auteur de la 1ère destination :", destinations[0]?.created_by);
 
   return (
     <section className="bg-light min-vh-100 py-4">
@@ -333,6 +331,7 @@ function DashboardPage() {
                       <tr>
                         <th className="ps-4">Destination</th>
                         <th>Région</th>
+                        <th>Auteur</th>
                         <th className="text-end pe-4">Actions</th>
                       </tr>
                     </thead>
@@ -365,6 +364,11 @@ function DashboardPage() {
                               {dest.region_name || dest.region || `Région #${dest.region_id}`}
                             </Badge>
                           </td>
+                          <td>
+                            <span className="text-muted small fw-medium">
+                              {dest.creator_username ? `@${dest.creator_username}` : "Inconnu"}
+                            </span>
+                          </td>
                           <td className="text-end pe-4">
                             {Number(dest.creator_id) === Number(user?.id) ? (
                               <Button
@@ -387,7 +391,7 @@ function DashboardPage() {
                       ))}
                       {destinations.length === 0 && destStatus !== "pending" && (
                         <tr>
-                          <td colSpan="3" className="text-center py-5 text-muted">
+                          <td colSpan="4" className="text-center py-5 text-muted">
                             Aucune destination dans le catalogue.
                           </td>
                         </tr>
