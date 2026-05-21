@@ -104,7 +104,6 @@ function SearchPage() {
                             <Col lg={3} md={6}>
                                 <Form.Group controlId="searchRegion">
                                     <Form.Label className="fw-semibold text-secondary">Région / Continent</Form.Label>
-                                    {/* Passage en Select dynamique basé sur l'API */}
                                     <Form.Select className="py-2.5 rounded-pill px-4" {...register("region")}>
                                         <option value="">Toutes les régions</option>
                                         {regionsList.map((reg) => (

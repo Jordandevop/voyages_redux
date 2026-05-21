@@ -3,14 +3,13 @@ import { apiRequest } from "../../api/apiClient";
 
 const initialState = {
     items: [],
-    status: 'waiting', // Pour le chargement initial de la liste
+    status: 'waiting', 
     error: null,
     
-    addStatus: 'waiting', // Pour le formulaire d'ajout
+    addStatus: 'waiting', 
     addError: null,
 };
 
-// --- RÉCUPÉRER LES COMMENTAIRES D'UNE DESTINATION ---
 export const fetchCommentsByDestination = createAsyncThunk(
     'comments/fetchByDestination',
     async (destinationId, { rejectWithValue }) => {
@@ -24,7 +23,6 @@ export const fetchCommentsByDestination = createAsyncThunk(
     }
 );
 
-// --- AJOUTER UN COMMENTAIRE ---
 export const addComment = createAsyncThunk(
     'comments/addComment',
     async (commentData, { rejectWithValue }) => {

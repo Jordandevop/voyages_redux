@@ -39,7 +39,6 @@ function AboutPage() {
                 </Col>
             </Row>
 
-            {/* Section Valeurs (3 Colonnes) */}
             <h3 className="text-center fw-bold mb-4">Pourquoi nous choisir ?</h3>
             <Row className="text-center g-4 mb-5">
                 <Col md={4}>

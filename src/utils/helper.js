@@ -1,5 +1,4 @@
 const getRegionColor = (region) => {
-    // Sécurité au cas où la région serait indéfinie
     if (!region) return "secondary";
 
     const normalizedRegion = region.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");

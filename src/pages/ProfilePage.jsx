@@ -9,7 +9,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { logout, updateLocalUser } from "../features/auth/authSlice";
 import { updateProfile, changePassword, resetProfileStatus } from "../features/users/usersSlice";
 
-// --- SCHÉMAS DE VALIDATION ---
 const profileSchema = yup.object({
   username: yup.string().required("Le pseudo est requis.").min(4, "Minimum 4 caractères."),
   email: yup.string().email("Email invalide.").required("L'email est requis."),
@@ -36,14 +35,12 @@ function ProfilePage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // On utilise directement le user du store Redux pour que la modification soit répercutée sur la Navbar
   const { user } = useSelector((state) => state.auth);
   const { updateStatus, updateError, passwordStatus, passwordError } = useSelector((state) => state.users);
 
   const [profileSuccess, setProfileSuccess] = useState(false);
   const [passwordSuccess, setPasswordSuccess] = useState(false);
 
-  // --- FORMULAIRE 1 : PROFIL ---
   const {
     register: registerProfile,
     handleSubmit: handleProfileSubmit,
@@ -60,7 +57,6 @@ function ProfilePage() {
     },
   });
 
-  // --- FORMULAIRE 2 : MOT DE PASSE ---
   const {
     register: registerPassword,
     handleSubmit: handlePasswordSubmit,
@@ -70,7 +66,6 @@ function ProfilePage() {
     resolver: yupResolver(passwordSchema),
   });
 
-  // Nettoyage en quittant la page
   useEffect(() => {
     return () => dispatch(resetProfileStatus());
   }, [dispatch]);
@@ -84,7 +79,7 @@ function ProfilePage() {
     setProfileSuccess(false);
     try {
       await dispatch(updateProfile(data)).unwrap();
-      dispatch(updateLocalUser(data)); // Synchronise la Navbar
+      dispatch(updateLocalUser(data)); 
       setProfileSuccess(true);
       setTimeout(() => setProfileSuccess(false), 4000);
     } catch (err) {
@@ -107,7 +102,6 @@ function ProfilePage() {
   return (
     <Container className="py-5" style={{ maxWidth: "900px" }}>
       
-      {/* 1. VOTRE EN-TÊTE CONSERVÉ */}
       <div className="d-flex flex-column align-items-center mb-5 text-center">
         <Image
           src={user?.avatar || user?.image || `https://ui-avatars.com/api/?name=${user?.username}&background=random`}
@@ -125,7 +119,6 @@ function ProfilePage() {
       </div>
 
       <Row className="g-4">
-        {/* 2. FORMULAIRE DE MODIFICATION DES INFOS */}
         <Col md={7}>
           <Card className="bg-white rounded-4 border-0 p-4 shadow-sm h-100">
             <h5 className="fw-bold mb-4">Modifier mes informations</h5>
@@ -189,7 +182,6 @@ function ProfilePage() {
           </Card>
         </Col>
 
-        {/* 3. FORMULAIRE DE MOT DE PASSE + DÉCONNEXION */}
         <Col md={5}>
           <Card className="bg-white rounded-4 border-0 p-4 shadow-sm h-100 d-flex flex-column">
             <h5 className="fw-bold mb-4">Sécurité</h5>
@@ -221,7 +213,6 @@ function ProfilePage() {
               </Button>
             </Form>
 
-            {/* Bouton de déconnexion placé en bas */}
             <div className="mt-auto pt-4 border-top">
               <Button variant="outline-danger" className="w-100 rounded-pill py-2 fw-bold" onClick={handleLogout}>
                 Se déconnecter

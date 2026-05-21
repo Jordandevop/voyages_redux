@@ -38,13 +38,13 @@ export const addFavorite = createAsyncThunk(
 
 export const removeFavorite = createAsyncThunk(
     'favorites/removeFavorite',
-    async (payload, { rejectWithValue }) => {
+    async (id, { rejectWithValue }) => {
         try {
             await apiRequest('/favorites/delete.php', {
                 method: 'POST',
-                body: JSON.stringify(payload),
+                body: JSON.stringify({destinationId: id}),
             });
-            return payload.destination_id;
+            return id;
         } catch (error) {
             return rejectWithValue(error.message);
         }

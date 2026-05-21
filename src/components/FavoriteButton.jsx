@@ -1,65 +1,62 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { addFavorite, removeFavorite } from '../features/favorites/favoriteSlice';
-import { Button, Spinner } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useState } from "react";
+import { Button, Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { addFavorite, removeFavorite } from "../features/favorites/favoriteSlice";
 
-function FavoriteButton({ destination }) {
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-    
-    const { favorites } = useSelector((state) => state.favorites);
-    const { user } = useSelector((state) => state.auth);
-    const [isLoading, setIsLoading] = useState(false);
+export default function FavoriteButton({ destination }) {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  
+  const { user } = useSelector((state) => state.auth);
+  const { favorites } = useSelector((state) => state.favorites);
+  
+  const [isLoading, setIsLoading] = useState(false);
 
-    const isFavorite = favorites.some((fav) => String(fav.destination_id) === String(destination.id));
+  const isFavorite = favorites.some(
+    (fav) => Number(fav.destinationId || fav.destination_id) === Number(destination.id)
+  );
 
-    const handleToggleFavorite = async () => {
-        if (!user) {
-            navigate('/login');
-            return;
-        }
+  const handleToggleFavorite = async () => {
+    if (!user) {
+      alert("Vous devez être connecté pour ajouter une destination à vos favoris.");
+      navigate("/login");
+      return;
+    }
 
-        setIsLoading(true);
-        try {
-            if (isFavorite) {
-                await dispatch(removeFavorite({ 
-                    destination_id: destination.id,
-                    user_id: user.id 
-                })).unwrap();
-            } else {
-                await dispatch(addFavorite({
-                    destination_id: destination.id,
-                    destination_title: destination.name || destination.title,
-                    destination_image: destination.image,
-                    user_id: user.id
-                })).unwrap();
-            }
-        } catch (error) {
-            console.error("Erreur serveur :", error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    setIsLoading(true);
 
-    return (
-        <Button 
-            variant={isFavorite ? "danger" : "light"} 
-            className={`rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm border ${isFavorite ? '' : 'border-danger text-danger'}`}
-            style={{ width: '40px', height: '40px', transition: 'all 0.2s' }}
-            onClick={handleToggleFavorite}
-            disabled={isLoading}
-            aria-label="Ajouter aux favoris"
-        >
-            {isLoading ? (
-                <Spinner animation="border" size="sm" variant={isFavorite ? "light" : "danger"} />
-            ) : (
-                <span style={{ fontSize: '1.2rem', marginTop: '2px' }}>
-                    {isFavorite ? "❤️" : "🤍"}
-                </span>
-            )}
-        </Button>
-    );
+    try {
+      if (isFavorite) {
+        await dispatch(removeFavorite(destination.id)).unwrap();
+      } else {
+        await dispatch(addFavorite({
+          destinationId: destination.id,
+          title: destination.name,
+          image: destination.image,
+        })).unwrap();
+      }
+    } catch (error) {
+      console.error("Erreur lors de la modification des favoris :", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <Button
+      variant={isFavorite ? "danger" : "light"}
+      onClick={handleToggleFavorite}
+      disabled={isLoading}
+      className="rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+      style={{ width: "45px", height: "45px", transition: "all 0.2s" }}
+      title={isFavorite ? "Retirer des favoris" : "Ajouter aux favoris"}
+    >
+      {isLoading ? (
+        <Spinner animation="border" size="sm" />
+      ) : (
+        <span className="fs-5">{isFavorite ? "❤️" : "🤍"}</span>
+      )}
+    </Button>
+  );
 }
-
-export default FavoriteButton;

@@ -18,10 +18,7 @@ function FavoritesPage() {
 
     const handleRemove = async (destinationId) => {
         try {
-            await dispatch(removeFavorite({ 
-                destination_id: destinationId,
-                user_id: user.id
-            })).unwrap();
+            await dispatch(removeFavorite(destinationId)).unwrap();
         } catch (err) {
             console.error("Impossible de retirer le favori :", err);
         }
@@ -83,20 +80,20 @@ function FavoritesPage() {
                 ) : (
                     <Row xs={1} md={2} lg={3} className="g-4">
                         {favorites.map((fav) => (
-                            <Col key={fav.destination_id}>
+                            <Col key={fav.destination_id || fav.destinationId}>
                                 <Card className="h-100 border-0 shadow-sm rounded-4 overflow-hidden">
                                     <div className="position-relative" style={{ height: "200px" }}>
                                         <Card.Img 
                                             variant="top" 
-                                            src={fav.destination_image} 
-                                            alt={fav.destination_title}
+                                            src={fav.destination_image || fav.image} 
+                                            alt={fav.destination_title || fav.title}
                                             style={{ width: "100%", height: "100%", objectFit: "cover" }}
                                         />
                                         <Button 
                                             variant="light" 
                                             className="position-absolute top-0 end-0 m-3 rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm text-danger"
                                             style={{ width: "35px", height: "35px" }}
-                                            onClick={() => handleRemove(fav.destination_id)}
+                                            onClick={() => handleRemove(fav.destination_id || fav.destinationId)}
                                             title="Retirer des favoris"
                                         >
                                             ❌
@@ -104,11 +101,11 @@ function FavoritesPage() {
                                     </div>
                                     <Card.Body className="d-flex flex-column p-4">
                                         <Card.Title className="fw-bold fs-5 mb-3">
-                                            {fav.destination_title}
+                                            {fav.destination_title || fav.title}
                                         </Card.Title>
                                         <Button 
                                             as={Link} 
-                                            to={`/destination/${fav.destination_id}`} 
+                                            to={`/destination/${fav.destination_slug || fav.destination_id || fav.destinationId}`} 
                                             variant="outline-primary" 
                                             className="w-100 mt-auto rounded-pill fw-bold"
                                         >
