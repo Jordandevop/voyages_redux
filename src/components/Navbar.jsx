@@ -3,12 +3,16 @@ import {
   Nav,
   Navbar as BootstapNavbar,
   Image,
+  Button,
 } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "../features/theme/themeSlice";
 
 function Navbar() {
   const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { mode } = useSelector((state) => state.theme);
 
   return (
     <BootstapNavbar
@@ -45,17 +49,13 @@ function Navbar() {
             {user ? (
               <>
                 {user?.role === "admin" && (
-                  <Nav.Link 
-                    as={NavLink} 
-                    to="/dashboard" 
-                    className="fw-bold"
-                  >
+                  <Nav.Link as={NavLink} to="/dashboard" className="fw-bold">
                     ⚙️ Dashboard
                   </Nav.Link>
                 )}
-                <Nav.Link 
-                  as={NavLink} 
-                  to="/favorites" 
+                <Nav.Link
+                  as={NavLink}
+                  to="/favorites"
                   className="fw-bold d-flex align-items-center gap-1"
                 >
                   ❤️ Favoris
@@ -83,7 +83,6 @@ function Navbar() {
                   )}
                   Mon Profil
                 </Nav.Link>
-                
               </>
             ) : (
               <>
@@ -96,6 +95,15 @@ function Navbar() {
               </>
             )}
           </Nav>
+          <Button
+            variant={mode === "light" ? "outline-dark" : "outline-light"}
+            onClick={() => dispatch(toggleTheme())}
+            className="rounded-circle ms-3 d-flex align-items-center justify-content-center"
+            style={{ width: "40px", height: "40px" }}
+            title="Changer de thème"
+          >
+            {mode === "light" ? "🌙" : "☀️"}
+          </Button>
         </BootstapNavbar.Collapse>
       </Container>
     </BootstapNavbar>
