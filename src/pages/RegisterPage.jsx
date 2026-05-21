@@ -13,7 +13,7 @@ import {
 } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUSer } from "../features/auth/authSlice";
+import { registerUser } from "../features/auth/authSlice";
 import { useState } from "react";
 
 const registerSchema = yup.object({
@@ -73,7 +73,7 @@ function RegisterPage() {
 
   const onSubmit = async (data) => {
     try {
-      await dispatch(registerUSer(data)).unwrap();
+      await dispatch(registerUser(data)).unwrap();
 
       navigate("/login");
     } catch (err) {

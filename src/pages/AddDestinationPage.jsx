@@ -83,9 +83,14 @@ function AddDestinationPage() {
         throw new Error("Action non autorisée. Rôle administrateur requis.");
       }
 
+      const payload = {
+        ...data,
+        created_by: user.id
+      };
+
       await apiRequest("/destinations/store.php", {
         method: "POST",
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
 
       setApiSuccess(true);

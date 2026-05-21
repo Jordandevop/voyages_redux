@@ -43,8 +43,8 @@ export const loginUser = createAsyncThunk(
     }
 );
 
-export const registerUSer = createAsyncThunk(
-    'auth/registerUSer',
+export const registerUser = createAsyncThunk(
+    'auth/registerUser',
     async (userInfos, {rejectWithValue}) => {
         try {
             return await apiRequest('/auth/register.php', {
@@ -96,12 +96,12 @@ const authSlice = createSlice({
 
                 state.error = action.payload
             })
-            .addCase(registerUSer.pending, (state)=> {
+            .addCase(registerUser.pending, (state)=> {
                 state.status = 'pending'
 
                 state.error = null
             })
-            .addCase(registerUSer.fulfilled, (state, action)=>{
+            .addCase(registerUser.fulfilled, (state, action)=>{
                 state.status= 'success'
 
                 state.user = action.payload
@@ -112,7 +112,7 @@ const authSlice = createSlice({
                 localStorage.setItem('token', action.payload.accessToken)
             })
 
-            .addCase(registerUSer.rejected, (state, action)=>{
+            .addCase(registerUser.rejected, (state, action)=>{
                  state.status = 'error'
 
                 state.error = action.payload

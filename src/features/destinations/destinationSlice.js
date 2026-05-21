@@ -21,6 +21,21 @@ export const fetchDestinations = createAsyncThunk(
     }
 );
 
+export const removeDestination = createAsyncThunk(
+    'destinations/removeDestination',
+    async (destinationId, { rejectWithValue }) => {
+        try {
+            await apiRequest('/destinations/delete.php', {
+                method: 'POST',
+                body: JSON.stringify({ id: destinationId }),
+            });
+            return destinationId; 
+        } catch (error) {
+            return rejectWithValue(error.message);
+        }
+    }
+);
+
 const destinationSlice = createSlice({
     name: 'destinations',
     initialState,
@@ -38,7 +53,10 @@ const destinationSlice = createSlice({
             .addCase(fetchDestinations.rejected, (state, action) => {
                 state.status = 'error';
                 state.error = action.payload;
-            });
+            })
+            .addCase(removeDestination.fulfilled, (state, action)=>{
+                state.items = state.items.filter((dest) => dest.id !== action.payload);
+            })
     }
 });
 

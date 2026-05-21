@@ -1,4 +1,3 @@
-// src/components/AdminRoute.jsx
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { apiRequest } from "../api/apiClient";
+import { useNavigate } from "react-router-dom";
 
 function ProfilePage() {
   const { token } = useSelector((state) => state.auth);
@@ -10,9 +11,11 @@ function ProfilePage() {
   const [isLoading, setIsLoading] = useState(true);
   
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate("/login");
   };
 
   useEffect(() => {
@@ -42,8 +45,7 @@ function ProfilePage() {
 
   return (
     <Container className="py-5" style={{ maxWidth: "600px" }}>
-      
-      {/* En-tête centré */}
+
       <div className="d-flex flex-column align-items-center mb-5 text-center">
         <Image
           src={fullProfile?.image || "https://via.placeholder.com/150"}
@@ -60,7 +62,6 @@ function ProfilePage() {
         </Badge>
       </div>
 
-      {/* Bloc d'informations épuré */}
       <div className="bg-white rounded-4 border p-4 shadow-sm mb-4">
         <h5 className="fw-bold mb-4">Informations du compte</h5>
 
@@ -81,8 +82,6 @@ function ProfilePage() {
         </Row>
 
       </div>
-
-      {/* Bouton d'action */}
       <Button 
         variant="outline-danger" 
         className="w-100 rounded-pill py-2 fw-bold" 
