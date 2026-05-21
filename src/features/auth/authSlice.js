@@ -57,6 +57,7 @@ export const registerUser = createAsyncThunk(
     }
 )
 
+
 const authSlice = createSlice({
     name: 'auth',
 
@@ -71,6 +72,12 @@ const authSlice = createSlice({
 
             localStorage.removeItem('user');
             localStorage.removeItem('token')
+        },
+        updateLocalUser: (state, action) => {
+            if (state.user) {
+                state.user = { ...state.user, ...action.payload };
+                localStorage.setItem('user', JSON.stringify(state.user));
+            }
         },
     },
 
@@ -120,5 +127,5 @@ const authSlice = createSlice({
     }
 })
 
-export const {logout} = authSlice.actions
+export const {logout, updateLocalUser} = authSlice.actions
 export default authSlice.reducer;
