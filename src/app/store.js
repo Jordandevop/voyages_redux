@@ -5,6 +5,7 @@ import favoriteReducer from '../features/favorites/favoriteSlice'
 import destinationReducer from '../features/destinations/destinationSlice'
 import usersReducer from '../features/users/usersSlice'
 import commentReducer from '../features/comments/commentSlice'
+import searchReducer from '../features/search/searchSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,5 +15,6 @@ export const store = configureStore({
         destinations: destinationReducer,
         users: usersReducer,
         comments: commentReducer,
+        search: searchReducer,
     },
 });
