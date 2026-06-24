@@ -6,8 +6,11 @@ import { describe, test, expect } from 'vitest';
 
 describe : Permet de regrouper plusieurs tests
 test : définit un test unitaire. Alias possible : it
+test.only permet de ne tester que le test souhaiter et d'ignorer les autres test.only("", )
+test.skip permet de passer le test et de tester seulement les autrestest.skip("", )
 expect : permet de vérifier le résultat attendu
 beforeEach : exécute du code avant chaque test
+
 
 Autres outils disponibles :
 afterEach : exécute du code après chaque test

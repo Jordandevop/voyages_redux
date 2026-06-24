@@ -89,6 +89,8 @@ describe("authSlice", () => {
   });
 
   // Mettre en place un test de connexion échouer
+  // test.only permet de ne tester que le test souhaiter et d'ignorer les autres test.only("", )
+  // test.skip permet de passer le test et de tester seulement les autrestest.skip("", )
 
   test("Connexion échoué", () => {
     const initialState = {
