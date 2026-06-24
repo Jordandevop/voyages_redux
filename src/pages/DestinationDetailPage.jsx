@@ -1,14 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import {
-  Container,
-  Button,
-  Row,
-  Col,
-  Badge,
-  Card,
-  Spinner,
-} from "react-bootstrap";
+import { Container, Button, Row, Col, Badge, Spinner } from "react-bootstrap";
 import { apiRequest } from "../api/apiClient";
 import FavoriteButton from "../components/FavoriteButton";
 import CommentsSection from "../components/CommentsSection";
@@ -28,7 +20,6 @@ function DestinationDetailPage() {
         const data = await apiRequest(`/destinations/show.php?slug=${slug}`, {
           method: "GET",
         });
-
         setDestination(data?.data || data);
       } catch (err) {
         setError(err.message);
@@ -36,151 +27,180 @@ function DestinationDetailPage() {
         setIsLoading(false);
       }
     };
-
-    if (slug) {
-      fetchDestination();
-    }
+    if (slug) fetchDestination();
   }, [slug]);
 
   if (isLoading) {
     return (
-      <Container
-        className="py-5 d-flex flex-column justify-content-center align-items-center"
-        style={{ minHeight: "60vh" }}
+      <div
+        className="d-flex flex-column justify-content-center align-items-center"
+        style={{ minHeight: "70vh" }}
       >
         <Spinner
           animation="border"
-          variant="primary"
-          style={{ width: "3rem", height: "3rem" }}
+          style={{ width: "3rem", height: "3rem", color: "var(--gold)" }}
         />
-        <p className="mt-3 text-muted fw-medium">Préparation du voyage...</p>
-      </Container>
+        <p className="mt-3 fw-medium" style={{ color: "var(--text-muted)" }}>
+          Préparation du voyage…
+        </p>
+      </div>
     );
   }
 
   if (error || !destination || Object.keys(destination).length === 0) {
     return (
-      <Container
-        className="py-5 d-flex justify-content-center align-items-center"
-        style={{ minHeight: "60vh" }}
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "70vh" }}
       >
-        <Card
-          className="text-center border-0 shadow-lg rounded-4 p-4 p-md-5"
-          style={{ maxWidth: "600px" }}
-        >
-          <Card.Body>
-            <div className="display-1 mb-4">🗺️</div>
-            <h2 className="fw-bold text-dark mb-3">Destination introuvable</h2>
-            <p className="text-muted fs-5 mb-4">
-              Il semblerait que cette destination ait disparu de notre carte ou
-              n'existe pas.
-            </p>
-            <Button
-              as={Link}
-              to="/destination"
-              variant="primary"
-              size="lg"
-              className="rounded-pill px-5 shadow-sm fw-bold"
-            >
-              Explorer d'autres horizons
-            </Button>
-          </Card.Body>
-        </Card>
-      </Container>
+        <div className="text-center" style={{ maxWidth: "520px" }}>
+          <div style={{ fontSize: "4rem", marginBottom: "1.5rem" }}>🗺️</div>
+          <h2
+            className="fw-bold mb-3"
+            style={{ fontFamily: "Playfair Display, serif" }}
+          >
+            Destination introuvable
+          </h2>
+          <p className="mb-4" style={{ color: "var(--text-muted)", lineHeight: 1.7 }}>
+            Il semblerait que cette destination ait disparu de notre carte ou n'existe pas.
+          </p>
+          <Button
+            as={Link}
+            to="/destination"
+            className="btn-gold rounded-pill px-5 py-3 fw-bold"
+          >
+            Explorer d'autres horizons
+          </Button>
+        </div>
+      </div>
     );
   }
-  const latitude = destination.lat || "46.2276";
+
+  const latitude  = destination.lat  || "46.2276";
   const longitude = destination.long || "2.2137";
   const mapUrl = `https://maps.google.com/maps?q=${latitude},${longitude}&z=5&output=embed`;
 
   return (
-    <Container className="py-5">
-      <Button
-        as={Link}
-        to="/destination"
-        variant="outline-secondary"
-        className="mb-4 rounded-pill px-4"
-      >
-        ← Retour aux destinations
-      </Button>
-
-      <Row className="align-items-center mb-5">
-        <Col lg={6} className="mb-4 mb-lg-0">
-          <div className="position-relative">
-            <img
-              src={destination.image}
-              alt={destination.name}
-              className="img-fluid rounded-4 shadow-lg w-100"
-              style={{ objectFit: "cover", maxHeight: "500px" }}
-            />
-            <div className="position-absolute top-0 end-0 p-3">
-              <FavoriteButton
-                destination={{ ...destination, title: destination.name }}
-              />
-            </div>
-            <div className="position-absolute top-0 end-0 p-3">
-              <FavoriteButton
-                destination={{ ...destination, title: destination.name }}
-              />
-            </div>
-          </div>
-        </Col>
-
-        <Col lg={6} className="px-lg-5">
-          <Badge
-            bg="info"
-            className="text-uppercase tracking-wider mb-2 py-2 px-3 rounded-pill text-white text-decoration-none"
-          >
-            {destination.region_name}
-          </Badge>
-          <h1 className="display-4 fw-bold mb-2">{destination.name}</h1>
-          <h4 className="text-muted mb-4">
-            📍 Capitale : {destination.capital}
-          </h4>
-
-          <p
-            className="fs-5 text-secondary mb-4"
-            style={{ whiteSpace: "pre-line" }}
-          >
-            {destination.description}
-          </p>
-
+    <>
+      <div className="page-header">
+        <Container style={{ position: "relative", zIndex: 2 }}>
           <Button
-            variant="primary"
-            size="lg"
-            className="rounded-pill px-5 shadow-sm fw-bold"
+            as={Link}
+            to="/destination"
+            variant="link"
+            className="p-0 mb-3 d-inline-flex align-items-center gap-2 text-decoration-none"
+            style={{ color: "rgba(255,255,255,0.55)", fontSize: "0.82rem", letterSpacing: "0.05em" }}
           >
-            Réserver ce voyage
+            ← Retour aux destinations
           </Button>
-        </Col>
-      </Row>
 
-      <hr className="my-5" />
-
-      <Row className="g-5">
-        <Col lg={7}>
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <h3 className="fw-bold mb-0">🌍 Situation Géographique</h3>
+          <div className="d-flex align-items-center gap-3 flex-wrap">
+            <Badge
+              className="rounded-pill px-3 py-2 text-white"
+              style={{
+                background: "rgba(201,161,74,0.25)",
+                border: "1px solid rgba(201,161,74,0.4)",
+                fontSize: "0.72rem",
+                fontWeight: 600,
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+              }}
+            >
+              {destination.region_name}
+            </Badge>
           </div>
-          <div className="ratio ratio-16x9 rounded-4 overflow-hidden shadow-sm border">
-            <iframe
-              title={`Carte de navigation pour ${destination.name}`}
-              src={mapUrl}
-              loading="lazy"
-              allowFullScreen=""
-              referrerPolicy="no-referrer-when-downgrade"
-              style={{ border: 0 }}
-            ></iframe>
-          </div>
-        </Col>
 
-        <Col lg={5}>
-          <div className="h-100">
+          <h1
+            className="display-4 fw-bold mt-2 mb-2"
+            style={{ fontFamily: "Playfair Display, serif", color: "#fff" }}
+          >
+            {destination.name}
+          </h1>
+          <p style={{ color: "var(--gold)", fontWeight: 600, fontSize: "0.9rem", letterSpacing: "0.04em", marginBottom: 0 }}>
+            ◈ Capitale : {destination.capital}
+          </p>
+        </Container>
+      </div>
+
+      <Container className="py-5">
+        <Row className="g-5 align-items-start mb-5">
+          <Col lg={6}>
+            <div className="detail-hero-wrap">
+              <img src={destination.image} alt={destination.name} />
+              <div className="detail-hero-overlay" />
+              <div className="position-absolute top-0 end-0 p-3" style={{ zIndex: 10 }}>
+                <FavoriteButton
+                  destination={{ ...destination, title: destination.name }}
+                />
+              </div>
+            </div>
+          </Col>
+          <Col lg={6}>
+            <p
+              className="fs-5 mb-4"
+              style={{
+                color: "var(--text-muted)",
+                lineHeight: 1.85,
+                whiteSpace: "pre-line",
+              }}
+            >
+              {destination.description}
+            </p>
+
+            <hr className="gold-divider" style={{ marginBottom: "2rem" }} />
+
+            <div className="d-flex flex-wrap gap-3">
+              <Button
+                className="btn-gold rounded-pill px-5 py-3 fw-bold shadow"
+                style={{ fontSize: "0.9rem" }}
+              >
+                Réserver ce voyage
+              </Button>
+              <Button
+                as={Link}
+                to="/contact"
+                variant="outline-secondary"
+                className="rounded-pill px-5 py-3 fw-semibold"
+                style={{ fontSize: "0.9rem" }}
+              >
+                Nous contacter
+              </Button>
+            </div>
+          </Col>
+        </Row>
+
+        <hr style={{ borderColor: "var(--cream-dark)", opacity: 1, marginBottom: "3rem" }} />
+
+        <Row className="g-5">
+          <Col lg={7}>
+            <span className="section-eyebrow">Géographie</span>
+            <h3
+              className="section-title h4 mb-4"
+              style={{ fontFamily: "Playfair Display, serif" }}
+            >
+              Situation Géographique
+            </h3>
+            <div
+              className="ratio ratio-16x9 overflow-hidden shadow-sm"
+              style={{ borderRadius: "1rem", border: "1px solid var(--cream-dark)" }}
+            >
+              <iframe
+                title={`Carte de ${destination.name}`}
+                src={mapUrl}
+                loading="lazy"
+                allowFullScreen=""
+                referrerPolicy="no-referrer-when-downgrade"
+                style={{ border: 0 }}
+              />
+            </div>
+          </Col>
+
+          <Col lg={5}>
             {destination && <CommentsSection destinationId={destination.id} />}
-          </div>
-        </Col>
-      </Row>
-    </Container>
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 }
 

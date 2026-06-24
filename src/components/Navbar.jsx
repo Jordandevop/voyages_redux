@@ -1,7 +1,7 @@
 import {
   Container,
   Nav,
-  Navbar as BootstapNavbar,
+  Navbar as BootstrapNavbar,
   Image,
   Button,
 } from "react-bootstrap";
@@ -15,29 +15,28 @@ function Navbar() {
   const { mode } = useSelector((state) => state.theme);
 
   return (
-    <BootstapNavbar
-      bg="primary"
-      data-bs-theme="dark"
+    <BootstrapNavbar
       expand="lg"
-      className="shadow-sm"
+      className="luxury-navbar"
+      data-bs-theme="dark"
     >
       <Container>
-        <BootstapNavbar.Brand as={NavLink} to="/">
+        <BootstrapNavbar.Brand as={NavLink} to="/">
           Voyages
-        </BootstapNavbar.Brand>
+        </BootstrapNavbar.Brand>
 
-        <BootstapNavbar.Toggle aria-controls="main-navbar" />
+        <BootstrapNavbar.Toggle aria-controls="main-navbar" />
 
-        <BootstapNavbar.Collapse id="main-navbar">
-          <Nav className="ms-auto align-items-center">
-            <Nav.Link as={NavLink} to="/">
+        <BootstrapNavbar.Collapse id="main-navbar">
+          <Nav className="ms-auto align-items-center gap-1">
+            <Nav.Link as={NavLink} to="/" end>
               Accueil
             </Nav.Link>
             <Nav.Link as={NavLink} to="/about">
-              A propos
+              À propos
             </Nav.Link>
             <Nav.Link as={NavLink} to="/destination">
-              Nos destinations
+              Destinations
             </Nav.Link>
             <Nav.Link as={NavLink} to="/search">
               Rechercher
@@ -49,37 +48,47 @@ function Navbar() {
             {user ? (
               <>
                 {user?.role === "admin" && (
-                  <Nav.Link as={NavLink} to="/dashboard" className="fw-bold">
-                    ⚙️ Dashboard
+                  <Nav.Link as={NavLink} to="/dashboard">
+                    Dashboard
                   </Nav.Link>
                 )}
-                <Nav.Link
-                  as={NavLink}
-                  to="/favorites"
-                  className="fw-bold d-flex align-items-center gap-1"
-                >
-                  ❤️ Favoris
+
+                <Nav.Link as={NavLink} to="/favorites">
+                  Favoris
                 </Nav.Link>
 
                 <Nav.Link
                   as={NavLink}
                   to="/profile"
-                  className="fw-bold d-flex align-items-center gap-2"
+                  className="d-flex align-items-center gap-2"
                 >
                   {user?.image ? (
                     <Image
                       src={user.image}
                       roundedCircle
                       style={{
-                        width: "30px",
-                        height: "30px",
+                        width: "26px",
+                        height: "26px",
                         objectFit: "cover",
-                        backgroundColor: "white",
+                        border: "1.5px solid rgba(201,161,74,0.6)",
                       }}
                       alt="Avatar"
                     />
                   ) : (
-                    <span>👤</span>
+                    <span
+                      className="rounded-circle d-flex align-items-center justify-content-center fw-bold"
+                      style={{
+                        width: "26px",
+                        height: "26px",
+                        background: "rgba(201,161,74,0.18)",
+                        fontSize: "0.7rem",
+                        border: "1px solid rgba(201,161,74,0.4)",
+                        color: "var(--gold)",
+                        flexShrink: 0,
+                      }}
+                    >
+                      {user?.username?.charAt(0)?.toUpperCase() || "V"}
+                    </span>
                   )}
                   Mon Profil
                 </Nav.Link>
@@ -89,24 +98,30 @@ function Navbar() {
                 <Nav.Link as={NavLink} to="/register">
                   Inscription
                 </Nav.Link>
-                <Nav.Link as={NavLink} to="/login">
+                <Button
+                  as={NavLink}
+                  to="/login"
+                  size="sm"
+                  className="btn-gold rounded-pill ms-2 px-4"
+                  style={{ fontSize: "0.75rem", letterSpacing: "0.06em", padding: "0.45rem 1rem" }}
+                >
                   Connexion
-                </Nav.Link>
+                </Button>
               </>
             )}
           </Nav>
-          <Button
-            variant={mode === "light" ? "outline-dark" : "outline-light"}
+
+          <button
             onClick={() => dispatch(toggleTheme())}
-            className="rounded-circle ms-3 d-flex align-items-center justify-content-center"
-            style={{ width: "40px", height: "40px" }}
+            className="ms-3 border-0 bg-transparent p-1"
+            style={{ color: "rgba(201,161,74,0.7)", fontSize: "1rem", cursor: "pointer", lineHeight: 1 }}
             title="Changer de thème"
           >
             {mode === "light" ? "🌙" : "☀️"}
-          </Button>
-        </BootstapNavbar.Collapse>
+          </button>
+        </BootstrapNavbar.Collapse>
       </Container>
-    </BootstapNavbar>
+    </BootstrapNavbar>
   );
 }
 

@@ -5,121 +5,159 @@ import { Link } from "react-router-dom";
 import { fetchFavorites, removeFavorite } from "../features/favorites/favoriteSlice";
 
 function FavoritesPage() {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
+  const { favorites, status, error } = useSelector((state) => state.favorites);
+  const { user } = useSelector((state) => state.auth);
 
-    const { favorites, status, error } = useSelector((state) => state.favorites);
-    const { user } = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (user?.id) dispatch(fetchFavorites(user.id));
+  }, [dispatch, user]);
 
-    useEffect(() => {
-        if (user && user.id) {
-            dispatch(fetchFavorites(user.id));
-        }
-    }, [dispatch, user]);
-
-    const handleRemove = async (destinationId) => {
-        try {
-            await dispatch(removeFavorite(destinationId)).unwrap();
-        } catch (err) {
-            console.error("Impossible de retirer le favori :", err);
-        }
-    };
-
-    if (!user) {
-        return (
-            <Container className="py-5 text-center min-vh-100 d-flex flex-column justify-content-center align-items-center">
-                <h2 className="fw-bold mb-3">Accès restreint</h2>
-                <p className="text-muted mb-4">Vous devez être connecté pour voir vos voyages favoris.</p>
-                <Button as={Link} to="/login" variant="primary" className="rounded-pill px-4 fw-bold">
-                    Se connecter
-                </Button>
-            </Container>
-        );
+  const handleRemove = async (destinationId) => {
+    try {
+      await dispatch(removeFavorite(destinationId)).unwrap();
+    } catch (err) {
+      console.error("Impossible de retirer le favori :", err);
     }
+  };
 
+  if (!user) {
     return (
-        <section className="bg-light min-vh-100 py-5">
-            <Container>
-                <div className="d-flex justify-content-between align-items-end mb-5 border-bottom pb-3">
-                    <div>
-                        <span className="text-primary fw-bold text-uppercase tracking-wider small d-block mb-1">
-                            Votre sélection
-                        </span>
-                        <h1 className="display-5 fw-bold text-dark mb-0">Mes Favoris ❤️</h1>
-                    </div>
-                    <div className="text-muted fw-medium">
-                        {favorites?.length || 0} {(favorites?.length || 0) > 1 ? 'destinations sauvées' : 'destination sauvée'}
-                    </div>
-                </div>
-
-                {error && (
-                    <Alert variant="danger" className="rounded-3 shadow-sm mb-4">
-                        <Alert.Heading className="fs-6 fw-bold">Erreur de chargement</Alert.Heading>
-                        <p className="mb-0 small">{error}</p>
-                    </Alert>
-                )}
-
-                {status === 'pending' && (!favorites || favorites.length === 0) ? (
-                    <div className="text-center py-5">
-                        <Spinner animation="grow" variant="primary" />
-                        <p className="mt-3 text-muted fw-medium">Chargement de vos coups de cœur...</p>
-                    </div>
-                ) : !favorites || favorites.length === 0 ? (
-                    <Card className="border-0 shadow-sm rounded-4 text-center py-5">
-                        <Card.Body className="py-5">
-                            <div className="fs-1 mb-3 opacity-50">🧳</div>
-                            <h3 className="fw-bold">Votre valise est vide !</h3>
-                            <p className="text-muted mb-4 w-50 mx-auto">
-                                Vous n'avez pas encore ajouté de destination à vos favoris. 
-                                Explorez notre catalogue pour trouver la prochaine aventure de votre famille.
-                            </p>
-                            <Button as={Link} to="/destination" variant="primary" className="rounded-pill px-4 py-2 fw-bold shadow-sm">
-                                Explorer les destinations
-                            </Button>
-                        </Card.Body>
-                    </Card>
-                ) : (
-                    <Row xs={1} md={2} lg={3} className="g-4">
-                        {favorites.map((fav) => (
-                            <Col key={fav.destination_id || fav.destinationId}>
-                                <Card className="h-100 border-0 shadow-sm rounded-4 overflow-hidden">
-                                    <div className="position-relative" style={{ height: "200px" }}>
-                                        <Card.Img 
-                                            variant="top" 
-                                            src={fav.destination_image || fav.image} 
-                                            alt={fav.destination_title || fav.title}
-                                            style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                                        />
-                                        <Button 
-                                            variant="light" 
-                                            className="position-absolute top-0 end-0 m-3 rounded-circle p-0 d-flex align-items-center justify-content-center shadow-sm text-danger"
-                                            style={{ width: "35px", height: "35px" }}
-                                            onClick={() => handleRemove(fav.destination_id || fav.destinationId)}
-                                            title="Retirer des favoris"
-                                        >
-                                            ❌
-                                        </Button>
-                                    </div>
-                                    <Card.Body className="d-flex flex-column p-4">
-                                        <Card.Title className="fw-bold fs-5 mb-3">
-                                            {fav.destination_title || fav.title}
-                                        </Card.Title>
-                                        <Button 
-                                            as={Link} 
-                                            to={`/destination/${fav.destination_slug || fav.destination_id || fav.destinationId}`} 
-                                            variant="outline-primary" 
-                                            className="w-100 mt-auto rounded-pill fw-bold"
-                                        >
-                                            Voir les détails
-                                        </Button>
-                                    </Card.Body>
-                                </Card>
-                            </Col>
-                        ))}
-                    </Row>
-                )}
-            </Container>
-        </section>
+      <div
+        className="d-flex flex-column justify-content-center align-items-center text-center"
+        style={{ minHeight: "60vh", padding: "2rem" }}
+      >
+        <div style={{ fontSize: "3rem", marginBottom: "1.5rem", opacity: 0.4 }}>🔒</div>
+        <h2 className="fw-bold mb-3" style={{ fontFamily: "Playfair Display, serif" }}>
+          Accès restreint
+        </h2>
+        <p className="mb-4" style={{ color: "var(--text-muted)" }}>
+          Vous devez être connecté pour voir vos destinations favorites.
+        </p>
+        <Button as={Link} to="/login" className="btn-gold rounded-pill px-5 py-3 fw-bold">
+          Se connecter
+        </Button>
+      </div>
     );
+  }
+
+  return (
+    <>
+    
+      <div className="page-header">
+        <Container style={{ position: "relative", zIndex: 2 }}>
+          <span className="section-eyebrow">Votre sélection</span>
+          <h1
+            className="display-4 fw-bold mt-2 mb-1"
+            style={{ fontFamily: "Playfair Display, serif", color: "#fff" }}
+          >
+            Mes Favoris
+          </h1>
+          <p style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.9rem", marginBottom: 0 }}>
+            {favorites?.length || 0}{" "}
+            {(favorites?.length || 0) > 1 ? "destinations sauvegardées" : "destination sauvegardée"}
+          </p>
+        </Container>
+      </div>
+
+      <Container className="py-5">
+        {error && (
+          <Alert variant="danger" className="rounded-3 shadow-sm mb-4 border-0">
+            {error}
+          </Alert>
+        )}
+
+        {status === "pending" && (!favorites || favorites.length === 0) ? (
+          <div className="text-center py-5">
+            <Spinner
+              animation="border"
+              style={{ color: "var(--gold)", width: "3rem", height: "3rem" }}
+            />
+            <p className="mt-3 fw-medium" style={{ color: "var(--text-muted)" }}>
+              Chargement de vos coups de cœur…
+            </p>
+          </div>
+        ) : !favorites || favorites.length === 0 ? (
+          <div className="text-center py-5">
+            <div style={{ fontSize: "4rem", opacity: 0.3, marginBottom: "1.5rem" }}>🧳</div>
+            <h3 className="fw-bold mb-3" style={{ fontFamily: "Playfair Display, serif" }}>
+              Votre valise est vide !
+            </h3>
+            <p
+              className="mb-4 mx-auto"
+              style={{ maxWidth: "420px", color: "var(--text-muted)", lineHeight: 1.7 }}
+            >
+              Vous n'avez pas encore sauvegardé de destination. Explorez notre catalogue
+              pour trouver votre prochaine aventure.
+            </p>
+            <Button
+              as={Link}
+              to="/destination"
+              className="btn-gold rounded-pill px-5 py-3 fw-bold shadow-sm"
+            >
+              Explorer les destinations
+            </Button>
+          </div>
+        ) : (
+          <Row xs={1} md={2} lg={3} className="g-4">
+            {favorites.map((fav) => (
+              <Col key={fav.destination_id || fav.destinationId}>
+                <Card className="luxury-card h-100">
+                  <div className="destination-card-image-wrap">
+                    <img
+                      src={fav.destination_image || fav.image}
+                      alt={fav.destination_title || fav.title}
+                    />
+                   
+                    <button
+                      className="position-absolute top-0 end-0 m-3 border-0 d-flex align-items-center justify-content-center shadow-sm"
+                      style={{
+                        width: "36px",
+                        height: "36px",
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.92)",
+                        cursor: "pointer",
+                        zIndex: 10,
+                        fontSize: "0.9rem",
+                        transition: "var(--transition)",
+                      }}
+                      onClick={() => handleRemove(fav.destination_id || fav.destinationId)}
+                      title="Retirer des favoris"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                  <Card.Body className="d-flex flex-column p-4">
+                    <h5
+                      className="fw-bold mb-3"
+                      style={{ fontFamily: "Playfair Display, serif", fontSize: "1.15rem" }}
+                    >
+                      {fav.destination_title || fav.title}
+                    </h5>
+                    <Button
+                      as={Link}
+                      to={`/destination/${fav.destination_slug || fav.destination_id || fav.destinationId}`}
+                      className="w-100 mt-auto rounded-pill fw-bold"
+                      style={{
+                        background: "var(--navy)",
+                        border: "none",
+                        color: "#fff",
+                        fontSize: "0.85rem",
+                        letterSpacing: "0.04em",
+                        padding: "0.65rem 1rem",
+                      }}
+                    >
+                      Voir les détails
+                    </Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
+      </Container>
+    </>
+  );
 }
 
 export default FavoritesPage;

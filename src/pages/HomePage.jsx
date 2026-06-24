@@ -1,93 +1,150 @@
-import { Card, Col, Row, Button, Container } from "react-bootstrap";
+import { Container, Col, Row, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../index.css";
 
+const FEATURES = [
+  {
+    icon: "✦",
+    title: "Destinations Exclusives",
+    desc: "Des itinéraires triés sur le volet, des fjords scandinaves aux temples du Japon.",
+  },
+  {
+    icon: "◈",
+    title: "Expériences Sur Mesure",
+    desc: "Du voyage intime à l'aventure haut de gamme, conçu selon vos envies et votre budget.",
+  },
+  {
+    icon: "❋",
+    title: "Experts à Votre Écoute",
+    desc: "Une équipe de passionnés dédiée à concevoir le séjour parfait pour vous.",
+  },
+];
+
 function HomePage() {
-    return (
-        <Container className="py-5">
-            <section className="mb-5">
-                <Card className="border-0 shadow-sm rounded-4 overflow-hidden bg-white">
-                    <Row className="g-0 align-items-center">
-                     
-                        <Col lg={6} className="order-2 order-lg-1">
-                            <Card.Body className="p-4 p-md-5 mx-xl-3">
-                                <span className="text-primary fw-bold text-uppercase tracking-wider small d-block mb-2">
-                                     Inspiration de voyage
-                                </span>
-                                <h1 className="display-4 fw-black mb-3 text-dark lh-sm">
-                                    Trouvez votre prochaine <br />
-                                    <span className="text-primary text-gradient">destination de rêve</span>
-                                </h1>
-                                <p className="text-secondary mb-4 fs-5 fw-normal">
-                                    Explorez des cultures uniques, des paysages à couper le souffle et 
-                                    planifiez le voyage qui vous ressemble à travers notre sélection exclusive de destinations.
-                                </p>
-                                <div className="d-flex flex-wrap gap-3">
-                                    <Button as={Link} to="/destination" variant="primary" size="lg" className="rounded-pill px-4 fw-bold shadow-sm">
-                                        Voir les destinations
-                                    </Button>
-                                    <Button as={Link} to="/search" variant="outline-secondary" size="lg" className="rounded-pill px-4 fw-bold">
-                                        Recherche avancée
-                                    </Button>
-                                </div>
-                            </Card.Body>
-                        </Col>
+  return (
+    <>
+      
+      <section className="hero-section">
+        <div
+          className="hero-bg"
+          style={{
+            backgroundImage:
+              "url('https://cdn.pixabay.com/photo/2020/04/25/18/55/cruise-5092182_1280.jpg')",
+          }}
+        />
+        <div className="hero-overlay" />
 
-                        <Col lg={6} className="order-1 order-lg-2">
-                            <div style={{ height: "450px", width: "100%" }}>
-                                <img 
-                                    className="w-100 h-100"
-                                    src="https://cdn.pixabay.com/photo/2020/04/25/18/55/cruise-5092182_1280.jpg" 
-                                    alt="Bateau de croisière dans un fjord" 
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                        </Col>
-                    </Row>
-                </Card>
-            </section>
-
-            <section className="py-4">
-                <Row className="g-4 text-center">
-                    <Col md={4}>
-                        <Card className="border-0 bg-light p-4 rounded-4 h-100 transition-card">
-                            <Card.Body>
-                                <div className="fs-1 mb-3">🌍</div>
-                                <h5 className="fw-bold text-dark">Destinations uniques</h5>
-                                <p className="text-muted small mb-0">
-                                    Des itinéraires triés sur le volet, des fjords scandinaves aux temples du Japon.
-                                </p>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col md={4}>
-                        <Card className="border-0 bg-light p-4 rounded-4 h-100 transition-card">
-                            <Card.Body>
-                                <div className="fs-1 mb-3">💎</div>
-                                <h5 className="fw-bold text-dark">Budgets transparents</h5>
-                                <p className="text-muted small mb-0">
-                                    Du voyage économique à l'aventure haut de gamme, sans frais cachés.
-                                </p>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-
-                    <Col md={4}>
-                        <Card className="border-0 bg-light p-4 rounded-4 h-100 transition-card">
-                            <Card.Body>
-                                <div className="fs-1 mb-3">🤝</div>
-                                <h5 className="fw-bold text-dark">Experts à votre écoute</h5>
-                                <p className="text-muted small mb-0">
-                                    Une équipe de passionnés à vos côtés pour concevoir le séjour parfait.
-                                </p>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                </Row>
-            </section>
+        <Container className="hero-content">
+          <Row>
+            <Col lg={7} xl={6} className="fade-in-up">
+              <span className="hero-eyebrow">Agence de voyages premium</span>
+              <h1 className="hero-title">
+                L'art de voyager<br />
+                <em>sans frontières</em>
+              </h1>
+              <p className="hero-subtitle">
+                Explorez des cultures uniques, des paysages à couper le souffle
+                et planifiez le voyage qui vous ressemble à travers notre
+                sélection exclusive de destinations.
+              </p>
+              <div className="d-flex flex-wrap gap-3">
+                <Button
+                  as={Link}
+                  to="/destination"
+                  className="btn-gold rounded-pill px-5 py-3 fw-bold shadow"
+                  style={{ fontSize: "0.9rem", letterSpacing: "0.05em" }}
+                >
+                  Nos Destinations
+                </Button>
+                <Button
+                  as={Link}
+                  to="/search"
+                  className="btn-outline-white rounded-pill px-5 py-3 fw-bold"
+                  style={{ fontSize: "0.9rem", letterSpacing: "0.05em" }}
+                >
+                  Recherche Avancée
+                </Button>
+              </div>
+            </Col>
+          </Row>
         </Container>
-    );
+
+        <div className="hero-scroll-indicator">
+          <div className="scroll-line" />
+          <span>Découvrir</span>
+        </div>
+      </section>
+
+      <section style={{ background: "var(--cream)", padding: "6rem 0" }}>
+        <Container>
+          <div className="text-center mb-5">
+            <span className="section-eyebrow">Pourquoi nous choisir</span>
+            <h2 className="section-title display-6 mb-3">
+              Une expérience voyage<br />exceptionnelle
+            </h2>
+            <hr className="gold-divider mx-auto" />
+          </div>
+
+          <Row className="g-4">
+            {FEATURES.map((f, i) => (
+              <Col md={4} key={i}>
+                <div className="feature-card">
+                  <div className="feature-icon">{f.icon}</div>
+                  <h5
+                    className="fw-bold mb-2"
+                    style={{ fontFamily: "Playfair Display, serif" }}
+                  >
+                    {f.title}
+                  </h5>
+                  <p
+                    className="mb-0"
+                    style={{ fontSize: "0.9rem", color: "var(--text-muted)", lineHeight: 1.7 }}
+                  >
+                    {f.desc}
+                  </p>
+                </div>
+              </Col>
+            ))}
+          </Row>
+        </Container>
+      </section>
+      <section
+        style={{
+          background: "linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%)",
+          padding: "5.5rem 0",
+        }}
+      >
+        <Container className="text-center">
+          <span className="section-eyebrow">Prêt pour l'aventure ?</span>
+          <h2
+            className="display-5 fw-bold mb-3 mt-2"
+            style={{ fontFamily: "Playfair Display, serif", color: "#fff" }}
+          >
+            Votre prochain voyage<br />commence ici
+          </h2>
+          <p
+            className="mb-4 mx-auto"
+            style={{
+              color: "rgba(255,255,255,0.65)",
+              maxWidth: "460px",
+              lineHeight: 1.75,
+            }}
+          >
+            Parcourez notre catalogue de destinations exclusives et planifiez
+            l'escapade dont vous avez toujours rêvé.
+          </p>
+          <Button
+            as={Link}
+            to="/destination"
+            className="btn-gold rounded-pill px-5 py-3 fw-bold shadow-lg"
+            style={{ fontSize: "0.95rem" }}
+          >
+            Explorer le catalogue
+          </Button>
+        </Container>
+      </section>
+    </>
+  );
 }
 
 export default HomePage;
